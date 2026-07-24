@@ -1,0 +1,21 @@
+import 'package:flutter/material.dart';
+import 'package:foodie/features/auth/views/log_in_view.dart';
+import 'package:foodie/splash_view.dart';
+
+void main() {
+  runApp(const Foodie());
+}
+
+class Foodie extends StatelessWidget {
+  const Foodie({super.key});
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Foodie',
+      home: const LogInView(),
+    );
+  }
+}
