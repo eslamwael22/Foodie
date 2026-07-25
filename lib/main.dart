@@ -11,7 +11,6 @@ void main() {
 class Foodie extends StatelessWidget {
   const Foodie({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
