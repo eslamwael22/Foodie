@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodie/core/routes/app_routers.dart';
 import 'package:foodie/features/auth/views/log_in_view.dart';
 import 'package:foodie/features/auth/views/sign_up_view.dart';
 import 'package:foodie/splash_view.dart';
@@ -13,10 +14,10 @@ class Foodie extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Foodie',
-      home: SignUpView(),
+      routerConfig: appRouter,
     );
   }
 }
