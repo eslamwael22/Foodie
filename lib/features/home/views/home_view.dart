@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodie/core/constants/app_colors.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
+import 'package:foodie/features/home/data/food_data.dart';
+import 'package:foodie/features/home/widgets/card_item.dart';
 import 'package:foodie/features/home/widgets/search_Text_Filed.dart';
 import 'package:gap/gap.dart';
 
@@ -18,7 +20,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         body: SafeArea(
           child: Padding(
@@ -96,6 +98,29 @@ class _HomeViewState extends State<HomeView> {
                         ),
                       ),
                     ),
+                  ),
+                ),
+                const Gap(15),
+
+                Expanded(
+                  child: GridView.builder(
+                    itemCount: foods.length,
+                    padding: EdgeInsets.zero,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 9,
+                          childAspectRatio: 0.75,
+                        ),
+                    itemBuilder: (context, index) {
+                      return Carditem(
+                        title: foods[index].title,
+                        subtitle: foods[index].subtitle,
+                        rating: foods[index].rating,
+                        image: foods[index].image,
+                      );
+                    },
                   ),
                 ),
               ],
