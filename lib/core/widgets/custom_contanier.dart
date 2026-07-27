@@ -3,11 +3,12 @@ import 'package:foodie/core/constants/app_colors.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
 
 class CustomContanier extends StatelessWidget {
-  final String text;
+  final String? text;
   final VoidCallback? onTap;
   final double width;
   final double height;
   final double radius;
+  final FontWeight? fontWeight;
   const CustomContanier({
     super.key,
     required this.text,
@@ -15,6 +16,7 @@ class CustomContanier extends StatelessWidget {
     required this.width,
     required this.height,
     required this.radius,
+    this.fontWeight,
   });
 
   @override
@@ -30,9 +32,9 @@ class CustomContanier extends StatelessWidget {
         ),
         child: Center(
           child: CustomText(
-            text: text,
+            text: text!,
             fontSize: 20,
-            fontWeight: FontWeight.bold,
+            fontWeight: fontWeight,
             color: Colors.white,
           ),
         ),

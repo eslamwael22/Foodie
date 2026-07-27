@@ -1,26 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:foodie/core/widgets/custom_contanier.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
 import 'package:gap/gap.dart';
 
-class Orderhistory extends StatelessWidget {
-  const Orderhistory({super.key});
+class CheckoutView extends StatelessWidget {
+  const CheckoutView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(backgroundColor: Colors.white, scrolledUnderElevation: 0),
       body: ListView.builder(
         padding: const EdgeInsets.fromLTRB(14, 14, 14, 120),
         itemCount: 4,
         itemBuilder: (context, index) {
           return Padding(
-            padding: EdgeInsets.only(bottom: 10),
+            padding: EdgeInsets.only(bottom: 8),
             child: Card(
-              elevation: 2,
-              color: Colors.white,
               child: Padding(
                 padding: const EdgeInsets.all(12),
                 child: Row(
@@ -42,29 +37,6 @@ class Orderhistory extends StatelessWidget {
                         ),
                         Gap(2),
                         CustomText(text: 'Veggie Burger'),
-                      ],
-                    ),
-
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CustomText(
-                          text: 'Code:#123456',
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        Gap(2),
-                        CustomText(text: 'Quantity: X 2'),
-                        Gap(2),
-                        CustomText(text: 'Total: \$18.19'),
-                        Gap(20),
-                        CustomContanier(
-                          text: 'Reorder',
-                          onTap: () {},
-                          width: 170,
-                          height: 50,
-                          radius: 15,
-                        ),
                       ],
                     ),
                   ],
