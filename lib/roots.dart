@@ -15,7 +15,7 @@ class Roots extends StatefulWidget {
 
 class _RootsState extends State<Roots> {
   int currentIndex = 0;
-  final pages = [HomeView(), Orderhistory(), CartView(), ProfileView()];
+  final pages = [HomeView(), CartView(), Orderhistory(), ProfileView()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(

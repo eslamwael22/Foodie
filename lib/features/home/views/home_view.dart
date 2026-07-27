@@ -6,6 +6,7 @@ import 'package:foodie/features/home/data/food_data.dart';
 import 'package:foodie/features/home/widgets/card_item.dart';
 import 'package:foodie/features/home/widgets/search_Text_Filed.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -114,11 +115,16 @@ class _HomeViewState extends State<HomeView> {
                           childAspectRatio: 0.75,
                         ),
                     itemBuilder: (context, index) {
-                      return Carditem(
-                        title: foods[index].title,
-                        subtitle: foods[index].subtitle,
-                        rating: foods[index].rating,
-                        image: foods[index].image,
+                      return InkWell(
+                        onTap: () {
+                          context.push('/Proudcts');
+                        },
+                        child: Carditem(
+                          title: foods[index].title,
+                          subtitle: foods[index].subtitle,
+                          rating: foods[index].rating,
+                          image: foods[index].image,
+                        ),
                       );
                     },
                   ),
