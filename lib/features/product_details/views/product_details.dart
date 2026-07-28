@@ -148,8 +148,16 @@ class ProductDetailsview extends StatelessWidget {
               ),
             ),
           ),
-          Gap(55),
-          ButtomSheet(),
+          Gap(50),
+          ButtomSheet(
+            text: 'Add to Cart',
+            onTap: () {
+              context.push('/Cart');
+            },
+            price: '18.19',
+            horizontalPadding: 50,
+            pricetext: 'Total',
+          ),
         ],
       ),
     );

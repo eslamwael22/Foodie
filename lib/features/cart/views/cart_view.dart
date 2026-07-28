@@ -3,6 +3,7 @@ import 'package:foodie/core/widgets/custom_contanier.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
 import 'package:foodie/features/cart/widgets/cart_item.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class CartView extends StatefulWidget {
   const CartView({super.key});
@@ -59,6 +60,9 @@ class _CartViewState extends State<CartView> {
                 const Spacer(),
 
                 CustomContanier(
+                  onTap: () {
+                    context.push('/Checkout');
+                  },
                   text: 'Checkout',
                   width: 160,
                   height: 50,
