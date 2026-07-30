@@ -116,6 +116,34 @@ class _LogInViewState extends State<LogInView> {
                   ),
                   const Gap(20),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Don't have an account? ",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                      Gap(5),
+                      GestureDetector(
+                        onTap: () {
+                          context.push('/signup');
+                        },
+                        child: const Text(
+                          "Sign Up",
+                          style: TextStyle(
+                            color: Color(0xffA8D84F),
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Gap(20),
+                  Row(
                     children: [
                       Expanded(
                         child: DottedLine(
@@ -148,34 +176,16 @@ class _LogInViewState extends State<LogInView> {
                       ),
                     ],
                   ),
-                  Gap(20),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Don't have an account? ",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w300,
-                        ),
-                      ),
-                      Gap(5),
-                      GestureDetector(
-                        onTap: () {
-                          context.push('/signup');
-                        },
-                        child: const Text(
-                          "Sign Up",
-                          style: TextStyle(
-                            color: Color(0xffA8D84F),
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
+                  Gap(20),
+                  GestureDetector(
+                    onTap: () => context.go('/Roots'),
+                    child: CustomText(
+                      text: 'Continue as Guest ?',
+                      fontSize: 15,
+                      color: AppColors.tertiary,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ],
               ),
