@@ -17,148 +17,157 @@ class ProductDetailsview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 20, left: 5),
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: IconButton(
-                onPressed: () => Navigator.of(context).maybePop(),
-                icon: const Icon(CupertinoIcons.back, size: 30),
-              ),
-            ),
-          ),
-          Row(
-            children: [
-              Image.asset('assets/images/pngwing 12.png', height: 250),
-              Gap(20),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 40),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Customize',
-                              style: TextStyle(
-                                color: AppColors.primary,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            TextSpan(
-                              text:
-                                  ' Your Burger\n'
-                                  'to Your Tastes. Ultimate\n'
-                                  'Experience',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Gap(10),
-                      CustomText(
-                        text: 'Spicy',
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      Transform.translate(
-                        offset: const Offset(-18, 0),
-                        child: CustomSlider(),
-                      ),
-                      Gap(5),
-                      Row(
-                        children: [
-                          Image.asset('assets/images/🥶.png'),
-                          Gap(160),
-                          Image.asset('assets/images/🌶️.png'),
-                        ],
-                      ),
-                    ],
-                  ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.only(bottom: 120),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 20, left: 5),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  onPressed: () => Navigator.of(context).maybePop(),
+                  icon: const Icon(CupertinoIcons.back, size: 30),
                 ),
               ),
-            ],
-          ),
-          Gap(10),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: CustomText(
-                text: 'Add Toppings',
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+            ),
+            Row(
+              children: [
+                Image.asset('assets/images/pngwing 12.png', height: 250),
+                Gap(20),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 40),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Customize',
+                                style: TextStyle(
+                                  color: AppColors.primary,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              TextSpan(
+                                text:
+                                    ' Your Burger\n'
+                                    'to Your Tastes. Ultimate\n'
+                                    'Experience',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Gap(10),
+                        CustomText(
+                          text: 'Spicy',
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        Transform.translate(
+                          offset: const Offset(-18, 0),
+                          child: CustomSlider(),
+                        ),
+                        Gap(5),
+                        Row(
+                          children: [
+                            Image.asset('assets/images/🥶.png'),
+                            Gap(160),
+                            Image.asset('assets/images/🌶️.png'),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Gap(10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: CustomText(
+                  text: 'Add Toppings',
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 15),
+            const SizedBox(height: 15),
 
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: SizedBox(
-              height: 120,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: toppings.length,
-                itemBuilder: (context, index) {
-                  return ToppingCard(
-                    image: toppings[index]["image"]!,
-                    title: toppings[index]["title"]!,
-                  );
-                },
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: SizedBox(
+                height: 120,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: toppings.length,
+                  itemBuilder: (context, index) {
+                    return ToppingCard(
+                      image: toppings[index]["image"]!,
+                      title: toppings[index]["title"]!,
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-          Gap(20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: CustomText(
-                text: 'Add Options',
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+            Gap(20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: CustomText(
+                  text: 'Add Options',
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          Gap(20),
+            Gap(20),
 
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: SizedBox(
-              height: 120,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: toppings.length,
-                itemBuilder: (context, index) {
-                  return ToppingCard(
-                    image: options[index]["image"]!,
-                    title: options[index]["title"]!,
-                  );
-                },
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: SizedBox(
+                height: 120,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: toppings.length,
+                  itemBuilder: (context, index) {
+                    return ToppingCard(
+                      image: options[index]["image"]!,
+                      title: options[index]["title"]!,
+                    );
+                  },
+                ),
               ),
             ),
-          ),
-          Gap(50),
-          ButtomSheet(
+            Gap(50),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        color: Colors.grey.shade200,
+        child: SafeArea(
+          top: false,
+          child: ButtomSheet(
             text: 'Add to Cart',
             onTap: () {
               context.push('/Cart');
             },
             price: '18.19',
-            horizontalPadding: 50,
             pricetext: 'Total',
           ),
-        ],
+        ),
       ),
     );
   }

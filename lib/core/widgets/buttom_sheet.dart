@@ -13,7 +13,7 @@ class ButtomSheet extends StatelessWidget {
   final Color? color;
   final double? width;
   final double? height;
-  final double horizontalPadding;
+
   const ButtomSheet({
     super.key,
     required this.onTap,
@@ -23,25 +23,34 @@ class ButtomSheet extends StatelessWidget {
     this.color,
     this.width,
     this.height,
-    required this.horizontalPadding,
     required this.pricetext,
     required this.text,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade200,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+      ),
+      child: Row(
+        children: [
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomText(
                 text: pricetext,
-                fontSize: fontSize ?? 32,
-                fontWeight: fontWeight ?? FontWeight.bold,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
-
+              const SizedBox(height: 5),
               RichText(
                 text: TextSpan(
                   children: [
@@ -49,7 +58,7 @@ class ButtomSheet extends StatelessWidget {
                       text: '\$',
                       style: TextStyle(
                         color: AppColors.primary,
-                        fontSize: fontSize ?? 32,
+                        fontSize: fontSize ?? 20,
                         fontWeight: fontWeight ?? FontWeight.bold,
                       ),
                     ),
@@ -57,7 +66,7 @@ class ButtomSheet extends StatelessWidget {
                       text: price,
                       style: TextStyle(
                         color: color ?? Colors.black,
-                        fontSize: fontSize ?? 32,
+                        fontSize: fontSize ?? 20,
                         fontWeight: fontWeight ?? FontWeight.bold,
                       ),
                     ),
@@ -66,20 +75,18 @@ class ButtomSheet extends StatelessWidget {
               ),
             ],
           ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-          child: CustomContanier(
-            onTap: () {
-              onTap();
-            },
+
+          const Spacer(),
+
+          CustomContanier(
+            onTap: onTap,
             text: text,
-            width: width ?? 150,
+            width: width ?? 160,
             height: height ?? 55,
             radius: 18,
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

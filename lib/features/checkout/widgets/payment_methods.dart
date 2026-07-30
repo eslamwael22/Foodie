@@ -31,40 +31,53 @@ class PaymentMethods extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-      child: Center(
-        child: ListTile(
+      child: Material(
+        color: tilecolor,
+        borderRadius: BorderRadius.circular(10),
+        child: InkWell(
           onTap: onTap,
-          minTileHeight: 80,
-          textColor: textcolor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          tileColor: tilecolor,
-          leading: Image.asset(image, height: 70, width: 50),
-          title: Column(
-            mainAxisAlignment: subtitle == null
-                ? MainAxisAlignment.center
-                : MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomText(
-                text: title,
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
-              ),
-              if (subtitle != null)
-                CustomText(text: subtitle!, fontSize: 14, color: Colors.grey),
-            ],
-          ),
-          trailing: Radio<String?>(
-            enabled: true,
-            focusColor: Colors.yellowAccent,
-            hoverColor: Colors.yellowAccent,
-            activeColor: Colors.white,
-            value: value,
-            groupValue: groupValue,
-            onChanged: onChanged,
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          borderRadius: BorderRadius.circular(10),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(image, height: 70, width: 50),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                        text: title,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        color: textcolor,
+                      ),
+                      if (subtitle != null) ...[
+                        const SizedBox(height: 4),
+                        CustomText(
+                          text: subtitle!,
+                          fontSize: 14,
+                          color: Colors.grey,
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                Radio<String?>(
+                  enabled: true,
+                  focusColor: Colors.yellowAccent,
+                  hoverColor: Colors.yellowAccent,
+                  activeColor: Colors.white,
+                  value: value,
+                  groupValue: groupValue,
+                  onChanged: onChanged,
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+              ],
+            ),
           ),
         ),
       ),
