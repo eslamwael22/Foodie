@@ -4,7 +4,7 @@ import 'package:foodie/core/constants/app_colors.dart';
 import 'package:foodie/core/widgets/buttom_sheet.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
 import 'package:foodie/features/checkout/widgets/custom_order_summary.dart';
-import 'package:foodie/features/checkout/widgets/payment_methods.dart';
+import 'package:foodie/core/widgets/payment_methods.dart';
 import 'package:foodie/features/checkout/widgets/sucsess_dialog.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';

@@ -6,7 +6,9 @@ class CustomContanier extends StatelessWidget {
   final String? text;
   final VoidCallback? onTap;
   final double width;
+  final Color? color;
   final double height;
+  final Color? textColor;
   final double radius;
   final FontWeight? fontWeight;
   const CustomContanier({
@@ -17,6 +19,8 @@ class CustomContanier extends StatelessWidget {
     required this.height,
     required this.radius,
     this.fontWeight,
+    this.color,
+    this.textColor,
   });
 
   @override
@@ -27,7 +31,7 @@ class CustomContanier extends StatelessWidget {
         width: width,
         height: height,
         decoration: BoxDecoration(
-          color: AppColors.primary,
+          color: color ?? AppColors.primary,
           borderRadius: BorderRadius.circular(radius),
         ),
         child: Center(
@@ -35,7 +39,7 @@ class CustomContanier extends StatelessWidget {
             text: text!,
             fontSize: 20,
             fontWeight: fontWeight,
-            color: Colors.white,
+            color: textColor ?? Colors.white,
           ),
         ),
       ),
