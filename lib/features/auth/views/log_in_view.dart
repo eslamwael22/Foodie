@@ -1,3 +1,4 @@
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,6 +7,7 @@ import 'package:foodie/core/widgets/custom_text.dart';
 import 'package:foodie/core/widgets/custom_text_field.dart';
 import 'package:foodie/features/auth/widgets/custom_buttom.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class LogInView extends StatefulWidget {
   LogInView({super.key});
@@ -34,22 +36,25 @@ class _LogInViewState extends State<LogInView> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const Gap(200),
-                  SvgPicture.asset("assets/images/Hungry_.svg"),
+                  const Gap(130),
+                  SvgPicture.asset(
+                    "assets/images/Hungry_.svg",
+                    color: Color(0xffA8D84F),
+                  ),
 
-                  const Gap(20),
+                  const Gap(40),
 
                   const CustomText(
                     text: 'Welcome Back, Discover More Delicious Dishes',
-                    fontSize: 15,
-                    fontWeight: FontWeight.w300,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
 
                   const Gap(50),
 
                   CustomTextField(
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.visiblePassword,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Email is required";
@@ -86,8 +91,92 @@ class _LogInViewState extends State<LogInView> {
                     hintText: 'Password',
                     hintStyle: Colors.grey,
                   ),
+                  Gap(10),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: CustomText(
+                      onTap: () {},
+                      text: 'Forgot Password?',
+                      fontSize: 15,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                   const Gap(20),
-                  CustomButom(formKey: _formKey, text: 'Log In'),
+                  CustomButom(
+                    formKey: _formKey,
+                    text: 'Log In',
+                    onTap: () {
+                      if (_formKey.currentState!.validate()) {
+                        context.go('/Roots');
+                      }
+                    },
+                    color: Color(0xffA8D84F),
+                    textColor: Colors.white,
+                  ),
+                  const Gap(20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: DottedLine(
+                          lineLength: 130,
+                          dashLength: 6,
+                          dashGapLength: 4,
+                          lineThickness: 1,
+                          dashColor: Colors.white,
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        child: Text(
+                          "OR",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: DottedLine(
+                          lineLength: 130,
+                          dashLength: 5,
+                          dashGapLength: 4,
+                          lineThickness: 1,
+                          dashColor: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Gap(20),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Don't have an account? ",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                      Gap(5),
+                      GestureDetector(
+                        onTap: () {
+                          context.push('/signup');
+                        },
+                        child: const Text(
+                          "Sign Up",
+                          style: TextStyle(
+                            color: Color(0xffA8D84F),
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

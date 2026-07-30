@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodie/core/constants/app_colors.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -19,6 +20,9 @@ class _SplashViewState extends State<SplashView>
   @override
   void initState() {
     super.initState();
+    Future.delayed(const Duration(seconds: 3), () {
+      context.go('/Login');
+    });
 
     _controller = AnimationController(
       vsync: this,
@@ -51,13 +55,16 @@ class _SplashViewState extends State<SplashView>
       body: Center(
         child: Column(
           children: [
-            const Gap(300),
+            const Gap(250),
 
             FadeTransition(
               opacity: _fadeAnimation,
               child: ScaleTransition(
                 scale: _scaleAnimation,
-                child: SvgPicture.asset("assets/images/Hungry_.svg"),
+                child: SvgPicture.asset(
+                  "assets/images/Hungry_.svg",
+                  color: AppColors.tertiary,
+                ),
               ),
             ),
 

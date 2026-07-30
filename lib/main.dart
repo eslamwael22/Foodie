@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodie/core/constants/app_colors.dart';
 import 'package:foodie/core/routes/app_routers.dart';
 import 'package:foodie/features/auth/views/log_in_view.dart';
 import 'package:foodie/features/auth/views/sign_up_view.dart';

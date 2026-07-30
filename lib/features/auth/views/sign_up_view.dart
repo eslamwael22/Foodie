@@ -1,10 +1,13 @@
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:foodie/core/constants/app_colors.dart';
+import 'package:foodie/core/widgets/custom_text.dart';
 import 'package:foodie/core/widgets/custom_text_field.dart';
 import 'package:foodie/features/auth/widgets/custom_buttom.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
@@ -26,17 +29,29 @@ class _SignUpViewState extends State<SignUpView> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         backgroundColor: AppColors.primary,
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 13),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 20),
             child: Form(
               key: _formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const Gap(100),
-                  SvgPicture.asset("assets/images/Hungry_.svg"),
-                  const Gap(30),
+                  const Gap(40),
+                  SvgPicture.asset(
+                    "assets/images/Hungry_.svg",
+                    color: AppColors.tertiary,
+                  ),
+                  Gap(20),
+                  const CustomText(
+                    text:
+                        'Create an account to Start Ordering Your Favourite Food',
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                    fontFamily: 'Poppins',
+                  ),
+                  const Gap(40),
                   CustomTextField(
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -110,8 +125,77 @@ class _SignUpViewState extends State<SignUpView> {
                     obscureText: true,
                     keyboardType: TextInputType.visiblePassword,
                   ),
+                  const Gap(30),
+                  CustomButom(
+                    formKey: _formKey,
+                    text: 'Sign Up',
+                    onTap: () {},
+                    color: AppColors.tertiary,
+                    textColor: AppColors.primary,
+                  ),
                   Gap(20),
-                  CustomButom(formKey: _formKey, text: 'Sign Up'),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: DottedLine(
+                          lineLength: 130,
+                          dashLength: 6,
+                          dashGapLength: 4,
+                          lineThickness: 1,
+                          dashColor: Colors.white,
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        child: Text(
+                          "OR",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: DottedLine(
+                          lineLength: 130,
+                          dashLength: 5,
+                          dashGapLength: 4,
+                          lineThickness: 1,
+                          dashColor: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Gap(20),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Already have an account? ",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                      Gap(5),
+                      GestureDetector(
+                        onTap: () {
+                          context.push('/Login');
+                        },
+                        child: const Text(
+                          "Sign In",
+                          style: TextStyle(
+                            color: Color(0xffA8D84F),
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
