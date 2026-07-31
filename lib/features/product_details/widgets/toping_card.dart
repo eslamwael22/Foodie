@@ -38,7 +38,7 @@ class _ToppingCardState extends State<ToppingCard> {
             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
             height: 40,
             decoration: const BoxDecoration(
-              color: Color(0xff433636),
+              color: AppColors.darkBrown,
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(25),
                 bottomRight: Radius.circular(25),
@@ -49,7 +49,7 @@ class _ToppingCardState extends State<ToppingCard> {
                 Expanded(
                   child: CustomText(
                     text: widget.title,
-                    color: Colors.white,
+                    color: AppColors.white,
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                   ),
@@ -61,8 +61,8 @@ class _ToppingCardState extends State<ToppingCard> {
                   },
                   child: CircleAvatar(
                     radius: 12,
-                    backgroundColor: Colors.red,
-                    child: Icon(Icons.add, color: Colors.white, size: 15),
+                    backgroundColor: AppColors.errorRed,
+                    child: Icon(Icons.add, color: AppColors.white, size: 15),
                   ),
                 ),
               ],

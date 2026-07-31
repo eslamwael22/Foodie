@@ -22,8 +22,11 @@ class _CheckoutViewState extends State<CheckoutView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(backgroundColor: Colors.white, scrolledUnderElevation: 0),
+      backgroundColor: AppColors.white,
+      appBar: AppBar(
+        backgroundColor: AppColors.white,
+        scrolledUnderElevation: 0,
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(bottom: 140),
         child: Column(
@@ -96,7 +99,7 @@ class _CheckoutViewState extends State<CheckoutView> {
               },
               tilecolor: AppColors.secondary,
               value: 'Cash on Delivery',
-              textcolor: Colors.white,
+              textcolor: AppColors.white,
             ),
             Gap(10),
             PaymentMethods(
@@ -109,7 +112,7 @@ class _CheckoutViewState extends State<CheckoutView> {
               title: 'Debit Card',
               subtitle: '**** **** **** 1234',
               value: 'Debit Card',
-              tilecolor: Color(0xffF3F4F6),
+              tilecolor: AppColors.lightGray,
               onChanged: (value) {
                 setState(() {
                   selectedPayment = value!;

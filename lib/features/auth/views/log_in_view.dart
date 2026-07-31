@@ -39,7 +39,7 @@ class _LogInViewState extends State<LogInView> {
                   const Gap(130),
                   SvgPicture.asset(
                     "assets/images/Hungry_.svg",
-                    color: const Color(0xFFF4D03F),
+                    color: AppColors.yellow,
                   ),
 
                   const Gap(40),
@@ -68,7 +68,7 @@ class _LogInViewState extends State<LogInView> {
                     },
                     controller: emailController,
                     hintText: 'Email Address',
-                    hintStyle: const Color(0xFF9E9E9E),
+                    hintStyle: AppColors.hintGrey,
                     obscureText: false,
                   ),
                   const Gap(30),
@@ -98,7 +98,7 @@ class _LogInViewState extends State<LogInView> {
                       onTap: () {},
                       text: 'Forgot Password?',
                       fontSize: 15,
-                      color: Colors.white,
+                      color: AppColors.white,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -111,8 +111,8 @@ class _LogInViewState extends State<LogInView> {
                         context.go('/Roots');
                       }
                     },
-                    color: const Color(0xFFF4D03F),
-                    textColor: const Color(0xFF8E244D),
+                    color: AppColors.yellow,
+                    textColor: AppColors.primary,
                   ),
                   const Gap(20),
                   Row(
@@ -121,7 +121,7 @@ class _LogInViewState extends State<LogInView> {
                       const Text(
                         "Don't have an account? ",
                         style: TextStyle(
-                          color: Colors.white70,
+                          color: AppColors.white70,
                           fontSize: 17,
                           fontWeight: FontWeight.w300,
                         ),
@@ -134,7 +134,7 @@ class _LogInViewState extends State<LogInView> {
                         child: const Text(
                           "Sign Up",
                           style: TextStyle(
-                            color: const Color(0xFFF4D03F),
+                            color: AppColors.yellow,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
@@ -151,7 +151,7 @@ class _LogInViewState extends State<LogInView> {
                           dashLength: 6,
                           dashGapLength: 4,
                           lineThickness: 1,
-                          dashColor: const Color(0xFFFFE7A3),
+                          dashColor: AppColors.paleYellow,
                         ),
                       ),
                       const Padding(
@@ -159,7 +159,7 @@ class _LogInViewState extends State<LogInView> {
                         child: Text(
                           "OR",
                           style: TextStyle(
-                            color: const Color(0xFFFFE7A3),
+                            color: AppColors.paleYellow,
                             fontSize: 17,
                             fontWeight: FontWeight.bold,
                           ),
@@ -171,7 +171,7 @@ class _LogInViewState extends State<LogInView> {
                           dashLength: 5,
                           dashGapLength: 4,
                           lineThickness: 1,
-                          dashColor: const Color(0xFFFFE7A3),
+                          dashColor: AppColors.paleYellow,
                         ),
                       ),
                     ],
@@ -183,7 +183,7 @@ class _LogInViewState extends State<LogInView> {
                     child: CustomText(
                       text: 'Continue as Guest ?',
                       fontSize: 15,
-                      color: Color(0xffF4D03F),
+                      color: AppColors.yellow,
                       fontWeight: FontWeight.w700,
                     ),
                   ),

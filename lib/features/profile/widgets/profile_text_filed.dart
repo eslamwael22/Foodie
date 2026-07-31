@@ -19,21 +19,21 @@ class ProfileTextField extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
       child: TextField(
         controller: controller,
-        cursorColor: Colors.black,
-        style: const TextStyle(color: Color(0xff212121), fontSize: 18),
+        cursorColor: AppColors.black,
+        style: const TextStyle(color: AppColors.textDark, fontSize: 18),
         decoration: InputDecoration(
           filled: true,
-          fillColor: Colors.white,
+          fillColor: AppColors.white,
 
           suffixIcon: Icon(icon, color: AppColors.primary, size: 22),
 
           labelText: labelText,
 
-          labelStyle: const TextStyle(color: Color(0xff757575), fontSize: 18),
+          labelStyle: const TextStyle(color: AppColors.textGrey, fontSize: 18),
 
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
-            borderSide: const BorderSide(color: Color(0xffD9D9D9)),
+            borderSide: const BorderSide(color: AppColors.borderGrey),
           ),
 
           focusedBorder: OutlineInputBorder(

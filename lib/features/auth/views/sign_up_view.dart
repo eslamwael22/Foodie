@@ -40,7 +40,7 @@ class _SignUpViewState extends State<SignUpView> {
                   const Gap(40),
                   SvgPicture.asset(
                     "assets/images/Hungry_.svg",
-                    color: const Color(0xFFF4D03F),
+                    color: AppColors.yellow,
                   ),
                   Gap(20),
                   const CustomText(
@@ -130,7 +130,7 @@ class _SignUpViewState extends State<SignUpView> {
                     formKey: _formKey,
                     text: 'Sign Up',
                     onTap: () {},
-                    color: const Color(0xFFF4D03F),
+                    color: AppColors.yellow,
                     textColor: AppColors.primary,
                   ),
                   Gap(20),
@@ -150,7 +150,7 @@ class _SignUpViewState extends State<SignUpView> {
                         child: Text(
                           "OR",
                           style: TextStyle(
-                            color: Colors.white,
+                            color: AppColors.yellow,
                             fontSize: 17,
                             fontWeight: FontWeight.bold,
                           ),
@@ -188,7 +188,7 @@ class _SignUpViewState extends State<SignUpView> {
                         child: const Text(
                           "Sign In",
                           style: TextStyle(
-                            color: const Color(0xFFF4D03F),
+                            color: AppColors.yellow,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),

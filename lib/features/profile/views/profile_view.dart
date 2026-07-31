@@ -32,7 +32,7 @@ class _ProfileViewState extends State<ProfileView> {
           backgroundColor: AppColors.white,
           elevation: 0,
           scrolledUnderElevation: 0,
-          iconTheme: const IconThemeData(color: Colors.white),
+          iconTheme: const IconThemeData(color: AppColors.white),
         ),
 
         body: SingleChildScrollView(
@@ -48,7 +48,7 @@ class _ProfileViewState extends State<ProfileView> {
                   backgroundColor: AppColors.primary,
                   child: const CircleAvatar(
                     radius: 59,
-                    backgroundColor: Colors.white,
+                    backgroundColor: AppColors.white,
                     child: Icon(
                       Icons.person,
                       size: 70,
@@ -92,7 +92,7 @@ class _ProfileViewState extends State<ProfileView> {
                 const Gap(25),
 
                 const Divider(
-                  color: Color(0xffD9D9D9),
+                  color: AppColors.borderGrey,
                   thickness: 1.5,
                   indent: 20,
                   endIndent: 20,
@@ -142,10 +142,10 @@ class _ProfileViewState extends State<ProfileView> {
                     Expanded(
                       child: CustomContanier(
                         text: 'Logout',
-                        color: const Color(0xffFFEBEE),
+                        color: AppColors.paleRed,
                         height: 55,
                         radius: 15,
-                        textColor: const Color(0xffD32F2F),
+                        textColor: AppColors.errorRed,
                         fontWeight: FontWeight.w600,
                         onTap: () {},
                         width: double.infinity,

@@ -15,14 +15,12 @@ class _CustomSliderState extends State<CustomSlider> {
   Widget build(BuildContext context) {
     return SliderTheme(
       data: SliderTheme.of(context).copyWith(
-        overlayShape: const RoundSliderOverlayShape(
-          overlayRadius: 15, // صغرها زي ما تحب
-        ),
+        overlayShape: const RoundSliderOverlayShape(overlayRadius: 15),
         trackHeight: 5,
         activeTrackColor: AppColors.primary,
-        inactiveTrackColor: Colors.green.shade200,
-        thumbColor: const Color(0xff0B4D2C),
-        overlayColor: Colors.green.shade300,
+        inactiveTrackColor: AppColors.paleYellow,
+        thumbColor: AppColors.primary,
+        overlayColor: AppColors.primary,
         thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 7),
       ),
       child: Slider(
