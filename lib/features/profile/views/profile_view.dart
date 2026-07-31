@@ -14,128 +14,149 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  bool isChecked = false;
-  String selectedPayment = "Cash on Delivery";
+  String selectedPayment = "Debit Card";
+
   final nameController = TextEditingController();
   final emailController = TextEditingController();
-  final DeliveryaddressController = TextEditingController();
+  final deliveryAddressController = TextEditingController();
   final passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        backgroundColor: AppColors.primary,
+        backgroundColor: AppColors.white,
+
         appBar: AppBar(
-          backgroundColor: AppColors.primary,
+          backgroundColor: AppColors.white,
+          elevation: 0,
           scrolledUnderElevation: 0,
+          iconTheme: const IconThemeData(color: Colors.white),
         ),
+
         body: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.all(20),
-                child: Center(
-                  child: CircleAvatar(
-                    radius: 60,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Column(
+              children: [
+                const Gap(25),
 
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        CupertinoIcons.person_fill,
-                        size: 80,
-                        color: Colors.grey,
-                      ),
+                CircleAvatar(
+                  radius: 62,
+                  backgroundColor: AppColors.primary,
+                  child: const CircleAvatar(
+                    radius: 59,
+                    backgroundColor: Colors.white,
+                    child: Icon(
+                      Icons.person,
+                      size: 70,
+                      color: AppColors.primary,
                     ),
                   ),
                 ),
-              ),
-              Gap(20),
-              ProfileTextField(
-                controller: nameController,
-                labelText: 'Name',
-                icon: CupertinoIcons.person_fill,
-              ),
-              ProfileTextField(
-                controller: emailController,
-                labelText: 'Email',
-                icon: CupertinoIcons.mail,
-              ),
-              ProfileTextField(
-                icon: CupertinoIcons.location_fill,
-                controller: DeliveryaddressController,
-                labelText: 'Delivery Address',
-              ),
-              ProfileTextField(
-                icon: CupertinoIcons.lock_fill,
-                controller: passwordController,
-                labelText: 'Password',
-              ),
-              Gap(20),
-              Divider(
-                color: Colors.grey,
-                thickness: 2,
-                indent: 40,
-                endIndent: 40,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 10,
+
+                const Gap(30),
+
+                ProfileTextField(
+                  controller: nameController,
+                  labelText: 'Name',
+                  icon: CupertinoIcons.person_fill,
                 ),
-                child: PaymentMethods(
+
+                const Gap(15),
+
+                ProfileTextField(
+                  controller: emailController,
+                  labelText: 'Email',
+                  icon: CupertinoIcons.mail,
+                ),
+
+                const Gap(15),
+
+                ProfileTextField(
+                  controller: deliveryAddressController,
+                  labelText: 'Delivery Address',
+                  icon: CupertinoIcons.location_fill,
+                ),
+
+                const Gap(15),
+
+                ProfileTextField(
+                  controller: passwordController,
+                  labelText: 'Password',
+                  icon: CupertinoIcons.lock_fill,
+                ),
+
+                const Gap(25),
+
+                const Divider(
+                  color: Color(0xffD9D9D9),
+                  thickness: 1.5,
+                  indent: 20,
+                  endIndent: 20,
+                ),
+
+                const Gap(15),
+
+                PaymentMethods(
+                  image: 'assets/images/image 13.png',
+                  title: 'Debit Card',
+                  subtitle: '**** **** **** 1234',
+                  value: 'Debit Card',
+                  groupValue: selectedPayment,
+                  tilecolor: AppColors.primary,
+                  textcolor: Colors.black,
                   onTap: () {
                     setState(() {
                       selectedPayment = 'Debit Card';
                     });
                   },
-                  image: 'assets/images/image 13.png',
-                  title: 'Debit Card',
-                  subtitle: '**** **** **** 1234',
-                  value: 'Debit Card',
-                  tilecolor: Color(0xffF3F4F6),
                   onChanged: (value) {
                     setState(() {
                       selectedPayment = value!;
                     });
                   },
-                  groupValue: selectedPayment,
-                  textcolor: Colors.black,
                 ),
-              ),
-              Gap(20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+
+                const Gap(20),
+
+                Row(
                   children: [
-                    CustomContanier(
-                      text: 'Edit profile',
-                      width: 150,
-                      color: AppColors.white,
-                      height: 55,
-                      radius: 15,
-                      fontWeight: FontWeight.w500,
-                      textColor: Colors.black,
-                      onTap: () {},
+                    Expanded(
+                      child: CustomContanier(
+                        text: 'Edit Profile',
+                        color: AppColors.primary,
+                        height: 55,
+                        radius: 15,
+                        textColor: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        onTap: () {},
+                        width: double.infinity,
+                      ),
                     ),
 
-                    CustomContanier(
-                      text: 'Logout',
-                      width: 150,
-                      color: AppColors.white,
-                      height: 55,
-                      radius: 15,
-                      fontWeight: FontWeight.w500,
-                      textColor: AppColors.primary,
-                      onTap: () {},
+                    const Gap(15),
+
+                    Expanded(
+                      child: CustomContanier(
+                        text: 'Logout',
+                        color: const Color(0xffFFEBEE),
+                        height: 55,
+                        radius: 15,
+                        textColor: const Color(0xffD32F2F),
+                        fontWeight: FontWeight.w600,
+                        onTap: () {},
+                        width: double.infinity,
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ],
+
+                const Gap(30),
+              ],
+            ),
           ),
         ),
       ),

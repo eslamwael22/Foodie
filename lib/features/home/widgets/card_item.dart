@@ -70,7 +70,7 @@ class _CarditemState extends State<Carditem> {
                   },
                   icon: Icon(
                     isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: isFavorite ? Colors.red : AppColors.primary,
+                    color: isFavorite ? AppColors.primary : AppColors.primary,
                   ),
                 ),
               ],

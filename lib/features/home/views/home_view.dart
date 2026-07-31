@@ -43,7 +43,7 @@ class _HomeViewState extends State<HomeView> {
 
                     const CircleAvatar(
                       radius: 25,
-                      backgroundColor: Colors.greenAccent,
+                      backgroundColor: AppColors.primary,
                     ),
                   ],
                 ),

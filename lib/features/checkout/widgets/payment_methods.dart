@@ -30,7 +30,7 @@ class PaymentMethods extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       child: Material(
         color: tilecolor,
         borderRadius: BorderRadius.circular(20),

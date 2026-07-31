@@ -63,7 +63,7 @@ class _SplashViewState extends State<SplashView>
                 scale: _scaleAnimation,
                 child: SvgPicture.asset(
                   "assets/images/Hungry_.svg",
-                  color: AppColors.tertiary,
+                  color: AppColors.yellow,
                 ),
               ),
             ),

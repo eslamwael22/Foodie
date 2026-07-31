@@ -15,7 +15,7 @@ class Searchtextfiled extends StatelessWidget {
       borderRadius: BorderRadius.circular(15),
       elevation: 7,
       child: TextField(
-        keyboardType: TextInputType.name,
+        keyboardType: TextInputType.visiblePassword,
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: TextStyle(color: Colors.grey),

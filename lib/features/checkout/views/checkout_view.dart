@@ -158,8 +158,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                       "Your order has been placed successfully and will be delivered soon",
                   buttonText: "Done",
                   onPressed: () {
-                    context.go('/'); // إغلاق الـ Dialog
-                    // أي أكشن تاني
+                    context.go('/Roots');
                   },
                   color: AppColors.primary,
                 ),

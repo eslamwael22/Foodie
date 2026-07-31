@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodie/core/constants/app_colors.dart';
 
@@ -6,6 +5,7 @@ class ProfileTextField extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
   final IconData? icon;
+
   const ProfileTextField({
     super.key,
     required this.controller,
@@ -16,28 +16,29 @@ class ProfileTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
       child: TextField(
-        keyboardType: TextInputType.visiblePassword,
-        cursorColor: AppColors.white,
         controller: controller,
-        style: TextStyle(color: AppColors.white),
+        cursorColor: Colors.black,
+        style: const TextStyle(color: Color(0xff212121), fontSize: 18),
         decoration: InputDecoration(
-          suffixIcon: Icon(icon, color: AppColors.white, size: 18),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: AppColors.white),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: AppColors.white),
-          ),
+          filled: true,
+          fillColor: Colors.white,
+
+          suffixIcon: Icon(icon, color: AppColors.primary, size: 22),
+
           labelText: labelText,
-          labelStyle: TextStyle(
-            color: AppColors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w400,
+
+          labelStyle: const TextStyle(color: Color(0xff757575), fontSize: 18),
+
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: const BorderSide(color: Color(0xffD9D9D9)),
+          ),
+
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: const BorderSide(color: AppColors.primary, width: 2),
           ),
         ),
       ),
