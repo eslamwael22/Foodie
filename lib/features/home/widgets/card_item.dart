@@ -26,8 +26,8 @@ class _CarditemState extends State<Carditem> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
-      shadowColor: Colors.white,
+      color: AppColors.white,
+      shadowColor: AppColors.white,
       elevation: 5,
       child: Container(
         width: 180,

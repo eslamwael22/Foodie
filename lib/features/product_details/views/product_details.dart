@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodie/core/constants/app_colors.dart';
 import 'package:foodie/core/widgets/buttom_sheet.dart';
-import 'package:foodie/core/widgets/custom_contanier.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
 import 'package:foodie/features/product_details/data/options_data.dart';
 import 'package:foodie/features/product_details/data/toping_data.dart';
@@ -91,7 +90,7 @@ class ProductDetailsview extends StatelessWidget {
                 ),
               ],
             ),
-            Gap(10),
+            Gap(15),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Align(
@@ -123,7 +122,7 @@ class ProductDetailsview extends StatelessWidget {
             ),
             Gap(20),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               child: Align(
                 alignment: Alignment.topLeft,
                 child: CustomText(
@@ -133,10 +132,10 @@ class ProductDetailsview extends StatelessWidget {
                 ),
               ),
             ),
-            Gap(20),
+            Gap(10),
 
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               child: SizedBox(
                 height: 120,
                 child: ListView.builder(
