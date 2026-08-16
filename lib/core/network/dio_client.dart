@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:foodie/core/utils/pref_helpers.dart';
 
 class DioClient {
   final Dio _dio = Dio(
@@ -14,9 +15,9 @@ class DioClient {
     // constructor
     _dio.interceptors.add(
       InterceptorsWrapper(
-        onRequest: (options, handler) {
+        onRequest: (options, handler) async {
           // بتتنفذ قبل ما يبعت الريكوست
-          final token = 'your_token_here';
+          final token = await PrefHelpers.getToken();
           if (token != null && token.isNotEmpty)
             options.headers['Authorization'] = 'Bearer $token'; // Replace
           return handler.next(options);
