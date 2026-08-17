@@ -5,6 +5,7 @@ import 'package:foodie/core/widgets/custom_contanier.dart';
 import 'package:foodie/features/checkout/widgets/payment_methods.dart';
 import 'package:foodie/features/profile/widgets/profile_text_filed.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -147,7 +148,9 @@ class _ProfileViewState extends State<ProfileView> {
                         radius: 15,
                         textColor: AppColors.errorRed,
                         fontWeight: FontWeight.w600,
-                        onTap: () {},
+                        onTap: () {
+                          context.go('/Login');
+                        },
                         width: double.infinity,
                       ),
                     ),

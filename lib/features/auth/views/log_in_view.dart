@@ -1,10 +1,14 @@
+import 'package:dio/dio.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodie/core/constants/app_colors.dart';
+import 'package:foodie/core/network/api_errors.dart';
+import 'package:foodie/core/network/api_exceptions.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
 import 'package:foodie/core/widgets/custom_text_field.dart';
+import 'package:foodie/features/auth/data/auth_repo.dart';
 import 'package:foodie/features/auth/widgets/custom_buttom.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -20,6 +24,31 @@ class _LogInViewState extends State<LogInView> {
   final emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final passwordController = TextEditingController();
+  AuthRepo authRepo = AuthRepo();
+  Future<void> loginUser() async {
+    try {
+      final user = await authRepo.signIn(
+        emailController.text.trim(),
+        passwordController.text.trim(),
+      );
+
+      if (mounted && user != null) {
+        context.go('/Roots');
+      }
+    } catch (e) {
+      if (mounted) {
+        String message = 'Something went wrong';
+
+        if (e is ApiError) {
+          message = e.message;
+        }
+
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(message)));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,11 +135,7 @@ class _LogInViewState extends State<LogInView> {
                   CustomButom(
                     formKey: _formKey,
                     text: 'Log In',
-                    onTap: () {
-                      if (_formKey.currentState!.validate()) {
-                        context.go('/Roots');
-                      }
-                    },
+                    onTap: loginUser,
                     color: AppColors.yellow,
                     textColor: AppColors.primary,
                   ),

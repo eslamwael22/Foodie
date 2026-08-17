@@ -129,7 +129,7 @@ class _SignUpViewState extends State<SignUpView> {
                   CustomButom(
                     formKey: _formKey,
                     text: 'Sign Up',
-                    onTap: () {},
+                    onTap: () async {},
                     color: AppColors.yellow,
                     textColor: AppColors.primary,
                   ),

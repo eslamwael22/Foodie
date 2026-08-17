@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:foodie/core/network/api_errors.dart';
+import 'package:foodie/core/network/api_exceptions.dart';
 import 'package:foodie/core/network/dio_client.dart';
 
 class ApiService {
@@ -16,13 +18,14 @@ class ApiService {
   Future<dynamic> post(String endpoint, Map<String, dynamic> data) async {
     try {
       final response = await DioClient().dio.post(endpoint, data: data);
+
       return response.data;
-    } catch (e) {
-      throw ApiError(message: e.toString());
+    } on DioException catch (e) {
+      throw ApiExceptions.handleError(e);
     }
   }
 
-  // PUT request
+  // PUT request // update data
   Future<dynamic> put(String endpoint, Map<String, dynamic> data) async {
     try {
       final response = await DioClient().dio.put(endpoint, data: data);
