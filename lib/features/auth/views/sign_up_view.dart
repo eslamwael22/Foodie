@@ -3,8 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:foodie/core/constants/app_colors.dart';
+import 'package:foodie/core/network/api_errors.dart';
+import 'package:foodie/core/widgets/custom_snak_bar.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
 import 'package:foodie/core/widgets/custom_text_field.dart';
+import 'package:foodie/features/auth/data/auth_repo.dart';
 import 'package:foodie/features/auth/widgets/custom_buttom.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -22,6 +25,47 @@ class _SignUpViewState extends State<SignUpView> {
   final passwordController = TextEditingController();
   final namecontroller = TextEditingController();
   final confirmpasswordController = TextEditingController();
+  final phoneController = TextEditingController();
+  AuthRepo authRepo = AuthRepo();
+  Future<void> signUp() async {
+    try {
+      final user = await authRepo.signUp(
+        namecontroller.text.trim(),
+        emailController.text.trim(),
+        passwordController.text.trim(),
+        confirmpasswordController.text.trim(),
+        phoneController.text.trim(),
+      );
+
+      if (mounted && user != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Account created successfully!'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
+          ),
+        );
+
+        await Future.delayed(const Duration(seconds: 2));
+
+        if (mounted) {
+          context.go('/Login');
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        String message = 'Something went wrong';
+
+        if (e is ApiError) {
+          message = e.message;
+        }
+
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(customSnackBar(message: message));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,19 +81,17 @@ class _SignUpViewState extends State<SignUpView> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const Gap(40),
+                  const Gap(60),
                   SvgPicture.asset(
                     "assets/images/Hungry_.svg",
                     color: AppColors.yellow,
                   ),
                   Gap(20),
                   const CustomText(
-                    text:
-                        'Create an account to Start Ordering Your Favourite Food',
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
+                    text: 'Create an account & discover delicious dishes',
+                    fontSize: 13.5,
+                    fontWeight: FontWeight.bold,
                     color: Colors.white,
-                    fontFamily: 'Poppins',
                   ),
                   const Gap(40),
                   CustomTextField(
@@ -65,7 +107,7 @@ class _SignUpViewState extends State<SignUpView> {
                     controller: namecontroller,
                     hintText: ' Name',
                     obscureText: false,
-                    keyboardType: TextInputType.name,
+                    keyboardType: TextInputType.visiblePassword,
                   ),
                   Gap(20),
                   CustomTextField(
@@ -83,7 +125,7 @@ class _SignUpViewState extends State<SignUpView> {
                     controller: emailController,
                     hintText: ' Email Address',
                     obscureText: false,
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.visiblePassword,
                   ),
                   Gap(20),
                   CustomTextField(
@@ -125,11 +167,23 @@ class _SignUpViewState extends State<SignUpView> {
                     obscureText: true,
                     keyboardType: TextInputType.visiblePassword,
                   ),
+                  Gap(20),
+                  CustomTextField(
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Phone Number is required";
+                      }
+                    },
+                    controller: phoneController,
+                    hintText: ' Phone Number',
+                    obscureText: false,
+                    keyboardType: TextInputType.visiblePassword,
+                  ),
                   const Gap(30),
                   CustomButom(
                     formKey: _formKey,
                     text: 'Sign Up',
-                    onTap: () async {},
+                    onTap: signUp,
                     color: AppColors.yellow,
                     textColor: AppColors.primary,
                   ),

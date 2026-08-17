@@ -11,6 +11,25 @@ class ApiExceptions {
       case DioExceptionType.receiveTimeout:
         return ApiError(message: 'Receive Timeout', statuscode: 408);
       case DioExceptionType.badResponse:
+        final data = error.response?.data;
+        String errorMessage = 'Bad Response';
+
+        if (data is Map<String, dynamic>) {
+          // الحالة الأولى: فيه array اسمه errors (validation errors)
+          if (data['errors'] != null &&
+              data['errors'] is List &&
+              (data['errors'] as List).isNotEmpty) {
+            final firstError = data['errors'][0];
+            if (firstError is Map<String, dynamic> &&
+                firstError['msg'] != null) {
+              errorMessage = firstError['msg'];
+            }
+          }
+          // الحالة التانية: الـ message نفسها فيها الرسالة الحقيقية (409 مثلاً)
+          else if (data['message'] != null && data['message'] != 'fail') {
+            errorMessage = data['message'];
+          }
+        }
         return ApiError(
           message: error.response?.data['message'] ?? 'Bad Response',
           statuscode: error.response?.statusCode,

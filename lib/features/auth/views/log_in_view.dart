@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodie/core/constants/app_colors.dart';
 import 'package:foodie/core/network/api_errors.dart';
 import 'package:foodie/core/network/api_exceptions.dart';
+import 'package:foodie/core/widgets/custom_snak_bar.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
 import 'package:foodie/core/widgets/custom_text_field.dart';
 import 'package:foodie/features/auth/data/auth_repo.dart';
@@ -45,7 +46,7 @@ class _LogInViewState extends State<LogInView> {
 
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text(message)));
+        ).showSnackBar(customSnackBar(message: message));
       }
     }
   }
@@ -71,12 +72,12 @@ class _LogInViewState extends State<LogInView> {
                     color: AppColors.yellow,
                   ),
 
-                  const Gap(40),
+                  const Gap(20),
 
                   const CustomText(
                     text: 'Welcome Back, Discover More Delicious Dishes',
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
                     color: Colors.white,
                   ),
 
