@@ -43,6 +43,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       cursorHeight: 20,
       decoration: InputDecoration(
         filled: true,
+        enabled: true,
         fillColor: Colors.white,
         hintText: widget.hintText,
         hintStyle: TextStyle(color: widget.hintStyle),
