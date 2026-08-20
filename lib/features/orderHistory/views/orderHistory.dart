@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:foodie/core/constants/app_colors.dart';
 import 'package:foodie/core/widgets/custom_contanier.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
+import 'package:foodie/features/cart/widgets/checkout_ani.dart';
 import 'package:gap/gap.dart';
 
 class Orderhistory extends StatelessWidget {
@@ -70,12 +72,12 @@ class Orderhistory extends StatelessWidget {
                         Gap(2),
                         CustomText(text: 'Total: \$18.19'),
                         Gap(20),
-                        CustomContanier(
+                        const CustomContanier(
                           text: 'Reorder',
-                          onTap: () {},
-                          width: 170,
-                          height: 50,
+                          width: 150,
+                          height: 45,
                           radius: 15,
+                          color: AppColors.primary,
                         ),
                       ],
                     ),

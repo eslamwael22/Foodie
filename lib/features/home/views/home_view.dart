@@ -19,12 +19,15 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  String userName = '';
+  String userEmail = '';
   List<String> categories = ['All', 'compos', 'sliders', 'classic', 'pizzas'];
   int currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
+    _loadUserData();
     _loadProfileImage();
   }
 
@@ -34,6 +37,18 @@ class _HomeViewState extends State<HomeView> {
       return;
     }
     PrefHelpers.profileImagePath.value = imagePath;
+  }
+
+  Future<void> _loadUserData() async {
+    final name = await PrefHelpers.getUserName();
+    final email = await PrefHelpers.getUserEmail();
+
+    if (!mounted) return;
+
+    setState(() {
+      userName = name ?? '';
+      userEmail = email ?? '';
+    });
   }
 
   @override
@@ -80,8 +95,8 @@ class _HomeViewState extends State<HomeView> {
 
                 const Gap(2),
 
-                const CustomText(
-                  text: 'Hello, Eslam Wael',
+                CustomText(
+                  text: 'Hello, $userName',
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
                 ),

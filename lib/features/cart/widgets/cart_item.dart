@@ -83,7 +83,7 @@ class _CartItemState extends State<CartItem> {
                     text: 'Remove',
                     width: 150,
                     height: 45,
-                    radius: 30,
+                    radius: 15,
                     onTap: () {},
                     fontWeight: FontWeight.w400,
                   ),

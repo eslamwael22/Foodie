@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodie/core/constants/app_colors.dart';
 import 'package:foodie/core/network/api_errors.dart';
 import 'package:foodie/core/network/api_exceptions.dart';
+import 'package:foodie/core/utils/pref_helpers.dart';
 import 'package:foodie/core/widgets/custom_snak_bar.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
 import 'package:foodie/core/widgets/custom_text_field.dart';
@@ -32,6 +33,8 @@ class _LogInViewState extends State<LogInView> {
         emailController.text.trim(),
         passwordController.text.trim(),
       );
+      await PrefHelpers.saveToken(user.token!);
+      await PrefHelpers.saveUserData(name: user.name, email: user.email);
 
       if (mounted && user != null) {
         context.go('/Roots');

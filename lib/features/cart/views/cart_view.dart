@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:foodie/core/constants/app_colors.dart';
-import 'package:foodie/core/widgets/custom_contanier.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
 import 'package:foodie/features/cart/widgets/cart_item.dart';
-import 'package:foodie/features/profile/widgets/notification_icon.dart';
+import 'package:foodie/features/cart/widgets/checkout_ani.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 
 class CartView extends StatefulWidget {
   const CartView({super.key});
@@ -91,15 +89,7 @@ class _CartViewState extends State<CartView> {
 
                 const Spacer(),
 
-                CustomContanier(
-                  onTap: () {
-                    context.push('/Checkout');
-                  },
-                  text: 'Checkout',
-                  width: 160,
-                  height: 50,
-                  radius: 15,
-                ),
+                const AnimatedCheckoutButton(),
               ],
             ),
           ),

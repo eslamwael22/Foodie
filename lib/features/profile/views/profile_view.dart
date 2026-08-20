@@ -22,6 +22,8 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
+  String userName = '';
+  String userEmail = '';
   File? imageFile;
   String selectedPayment = "Debit Card";
 
@@ -34,6 +36,7 @@ class _ProfileViewState extends State<ProfileView> {
   void initState() {
     super.initState();
     _loadProfileImage();
+    _loadUserData();
   }
 
   Future<void> _loadProfileImage() async {
@@ -50,6 +53,18 @@ class _ProfileViewState extends State<ProfileView> {
     } else {
       await PrefHelpers.clearProfileImage();
     }
+  }
+
+  Future<void> _loadUserData() async {
+    final name = await PrefHelpers.getUserName();
+    final email = await PrefHelpers.getUserEmail();
+
+    if (!mounted) return;
+
+    setState(() {
+      userName = name ?? '';
+      userEmail = email ?? '';
+    });
   }
 
   Future<void> saveProfileImage(File image) async {
@@ -169,7 +184,7 @@ class _ProfileViewState extends State<ProfileView> {
 
                 Center(
                   child: CustomText(
-                    text: 'Eslam Wael',
+                    text: userName,
                     fontSize: 25,
                     fontWeight: FontWeight.w500,
                     color: AppColors.black,
@@ -180,7 +195,7 @@ class _ProfileViewState extends State<ProfileView> {
 
                 Center(
                   child: CustomText(
-                    text: 'eslam@gmail.com',
+                    text: userEmail,
                     fontSize: 15,
                     color: Colors.grey,
                   ),
@@ -221,7 +236,7 @@ class _ProfileViewState extends State<ProfileView> {
                       buildInfoItem(
                         icon: Icons.person,
                         title: 'Name',
-                        value: 'Eslam Wael',
+                        value: userName,
                       ),
 
                       const Devider(),
@@ -230,7 +245,7 @@ class _ProfileViewState extends State<ProfileView> {
                       buildInfoItem(
                         icon: Icons.email,
                         title: 'Email',
-                        value: 'eslam@gmail.com',
+                        value: userEmail,
                       ),
 
                       const Devider(),

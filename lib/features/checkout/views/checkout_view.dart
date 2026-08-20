@@ -168,7 +168,6 @@ class _CheckoutViewState extends State<CheckoutView> {
               );
             },
             price: '23.74',
-
             pricetext: 'Total Price',
             text: 'Pay Now',
           ),
