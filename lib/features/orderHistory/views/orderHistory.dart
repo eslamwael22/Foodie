@@ -11,7 +11,19 @@ class Orderhistory extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(backgroundColor: Colors.white, scrolledUnderElevation: 0),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        scrolledUnderElevation: 0,
+        title: Padding(
+          padding: const EdgeInsets.only(top: 25),
+          child: CustomText(
+            text: 'Order History',
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+          ),
+        ),
+      ),
       body: ListView.builder(
         padding: const EdgeInsets.fromLTRB(14, 14, 14, 120),
         itemCount: 4,

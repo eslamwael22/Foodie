@@ -34,7 +34,6 @@ class _SignUpViewState extends State<SignUpView> {
         emailController.text.trim(),
         passwordController.text.trim(),
         confirmpasswordController.text.trim(),
-        phoneController.text.trim(),
       );
 
       if (mounted && user != null) {
@@ -168,17 +167,6 @@ class _SignUpViewState extends State<SignUpView> {
                     keyboardType: TextInputType.visiblePassword,
                   ),
                   Gap(20),
-                  CustomTextField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Phone Number is required";
-                      }
-                    },
-                    controller: phoneController,
-                    hintText: ' Phone Number',
-                    obscureText: false,
-                    keyboardType: TextInputType.visiblePassword,
-                  ),
                   const Gap(30),
                   CustomButom(
                     formKey: _formKey,

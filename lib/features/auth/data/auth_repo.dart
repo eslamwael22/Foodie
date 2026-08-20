@@ -27,7 +27,6 @@ class AuthRepo {
     String email,
     String password,
     String rePassword,
-    String phone,
   ) async {
     try {
       final response = await apiService.post('/auth/signup', {
@@ -35,7 +34,6 @@ class AuthRepo {
         'email': email,
         'password': password,
         'rePassword': rePassword,
-        'phone': phone,
       });
       final user = UserModel.fromJson(response);
       // Validate that we received a token

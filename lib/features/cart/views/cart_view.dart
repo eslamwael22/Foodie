@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:foodie/core/constants/app_colors.dart';
 import 'package:foodie/core/widgets/custom_contanier.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
 import 'package:foodie/features/cart/widgets/cart_item.dart';
+import 'package:foodie/features/profile/widgets/notification_icon.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
@@ -18,7 +20,37 @@ class _CartViewState extends State<CartView> {
     return Scaffold(
       backgroundColor: Colors.white,
 
-      appBar: AppBar(backgroundColor: Colors.white, scrolledUnderElevation: 0),
+      appBar: AppBar(
+        backgroundColor: AppColors.white,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        centerTitle: false,
+        title: Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: Row(
+            children: [
+              const CustomText(
+                text: 'Cart',
+                fontSize: 22,
+                fontWeight: FontWeight.w600,
+                color: AppColors.black,
+              ),
+              const Spacer(),
+              IconButton(
+                onPressed: () {},
+                icon: Badge(
+                  backgroundColor: AppColors.primary,
+                  label: Text('4', style: TextStyle(color: Colors.white)),
+                  child: const Icon(
+                    Icons.shopping_cart_outlined,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
 
       body: ListView.builder(
         padding: const EdgeInsets.fromLTRB(14, 14, 14, 120),

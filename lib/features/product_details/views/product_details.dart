@@ -10,12 +10,27 @@ import 'package:foodie/features/product_details/widgets/toping_card.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-class ProductDetailsview extends StatelessWidget {
+class ProductDetailsview extends StatefulWidget {
   const ProductDetailsview({super.key});
+
+  @override
+  State<ProductDetailsview> createState() => _ProductDetailsviewState();
+}
+
+class _ProductDetailsviewState extends State<ProductDetailsview> {
+  static const double basePrice = 18.19;
+  double totalPrice = basePrice;
+
+  void _addItemPrice(String price) {
+    setState(() {
+      totalPrice += double.parse(price);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(bottom: 120),
         child: Column(
@@ -107,7 +122,7 @@ class ProductDetailsview extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: SizedBox(
-                height: 120,
+                height: 126,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: toppings.length,
@@ -115,6 +130,8 @@ class ProductDetailsview extends StatelessWidget {
                     return ToppingCard(
                       image: toppings[index]["image"]!,
                       title: toppings[index]["title"]!,
+                      price: toppings[index]["price"]!,
+                      onAdd: () => _addItemPrice(toppings[index]["price"]!),
                     );
                   },
                 ),
@@ -137,14 +154,16 @@ class ProductDetailsview extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               child: SizedBox(
-                height: 120,
+                height: 126,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: toppings.length,
+                  itemCount: options.length,
                   itemBuilder: (context, index) {
                     return ToppingCard(
                       image: options[index]["image"]!,
                       title: options[index]["title"]!,
+                      price: options[index]["price"]!,
+                      onAdd: () => _addItemPrice(options[index]["price"]!),
                     );
                   },
                 ),
@@ -163,7 +182,7 @@ class ProductDetailsview extends StatelessWidget {
             onTap: () {
               context.push('/Cart');
             },
-            price: '18.19',
+            price: totalPrice.toStringAsFixed(2),
             pricetext: 'Total',
           ),
         ),

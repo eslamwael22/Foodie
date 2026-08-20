@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:foodie/core/constants/app_colors.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
 
-class ToppingCard extends StatefulWidget {
+class ToppingCard extends StatelessWidget {
   final String image;
   final String title;
+  final String price;
+  final VoidCallback onAdd;
 
-  const ToppingCard({super.key, required this.image, required this.title});
+  const ToppingCard({
+    super.key,
+    required this.image,
+    required this.title,
+    required this.price,
+    required this.onAdd,
+  });
 
-  @override
-  State<ToppingCard> createState() => _ToppingCardState();
-}
-
-class _ToppingCardState extends State<ToppingCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,13 +33,13 @@ class _ToppingCardState extends State<ToppingCard> {
           SizedBox(
             height: 80,
             child: Center(
-              child: Image.asset(widget.image, height: 90, fit: BoxFit.contain),
+              child: Image.asset(image, height: 90, fit: BoxFit.contain),
             ),
           ),
 
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-            height: 40,
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+            height: 46,
             decoration: const BoxDecoration(
               color: AppColors.darkBrown,
               borderRadius: BorderRadius.only(
@@ -47,18 +50,36 @@ class _ToppingCardState extends State<ToppingCard> {
             child: Row(
               children: [
                 Expanded(
-                  child: CustomText(
-                    text: widget.title,
-                    color: AppColors.white,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                        text: title,
+                        color: AppColors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 2,
+                          horizontal: 2,
+                        ),
+                        child: CustomText(
+                          text: '\$$price',
+                          color: AppColors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
 
                 GestureDetector(
-                  onTap: () {
-                    setState(() {});
-                  },
+                  onTap: onAdd,
                   child: CircleAvatar(
                     radius: 12,
                     backgroundColor: AppColors.errorRed,

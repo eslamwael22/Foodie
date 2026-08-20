@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodie/core/constants/app_colors.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
+import 'package:gap/gap.dart';
 
 class CustomContanier extends StatelessWidget {
   final String? text;
@@ -10,6 +11,8 @@ class CustomContanier extends StatelessWidget {
   final double height;
   final Color? textColor;
   final double radius;
+  final double? fontSize;
+  final IconData? icon;
   final FontWeight? fontWeight;
   const CustomContanier({
     super.key,
@@ -21,6 +24,8 @@ class CustomContanier extends StatelessWidget {
     this.fontWeight,
     this.color,
     this.textColor,
+    this.icon,
+    this.fontSize,
   });
 
   @override
@@ -35,11 +40,21 @@ class CustomContanier extends StatelessWidget {
           borderRadius: BorderRadius.circular(radius),
         ),
         child: Center(
-          child: CustomText(
-            text: text!,
-            fontSize: 20,
-            fontWeight: fontWeight,
-            color: textColor ?? Colors.white,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+
+            children: [
+              if (icon != null) ...[
+                Icon(icon, color: textColor ?? Colors.white),
+                const Gap(8),
+              ],
+              CustomText(
+                text: text!,
+                fontSize: fontSize ?? 20,
+                fontWeight: fontWeight,
+                color: textColor ?? Colors.white,
+              ),
+            ],
           ),
         ),
       ),

@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodie/core/constants/app_colors.dart';
+import 'package:foodie/core/utils/pref_helpers.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
 import 'package:foodie/features/home/data/food_data.dart';
 import 'package:foodie/features/home/widgets/card_item.dart';
@@ -18,6 +21,21 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   List<String> categories = ['All', 'compos', 'sliders', 'classic', 'pizzas'];
   int currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileImage();
+  }
+
+  Future<void> _loadProfileImage() async {
+    final imagePath = await PrefHelpers.getProfileImagePath();
+    if (!mounted || imagePath == null || !await File(imagePath).exists()) {
+      return;
+    }
+    PrefHelpers.profileImagePath.value = imagePath;
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -42,9 +60,20 @@ class _HomeViewState extends State<HomeView> {
 
                     const Spacer(),
 
-                    const CircleAvatar(
-                      radius: 25,
-                      backgroundColor: AppColors.primary,
+                    ValueListenableBuilder<String?>(
+                      valueListenable: PrefHelpers.profileImagePath,
+                      builder: (context, imagePath, child) {
+                        return CircleAvatar(
+                          radius: 25,
+                          backgroundColor: AppColors.primary,
+                          backgroundImage: imagePath == null
+                              ? null
+                              : FileImage(File(imagePath)),
+                          child: imagePath == null
+                              ? const Icon(Icons.person, color: Colors.white)
+                              : null,
+                        );
+                      },
                     ),
                   ],
                 ),

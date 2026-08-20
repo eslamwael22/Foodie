@@ -1,11 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodie/core/constants/app_colors.dart';
+import 'package:foodie/core/utils/pref_helpers.dart';
 import 'package:foodie/core/widgets/custom_contanier.dart';
+import 'package:foodie/core/widgets/custom_text.dart';
+import 'package:foodie/core/widgets/devider.dart';
 import 'package:foodie/features/checkout/widgets/payment_methods.dart';
-import 'package:foodie/features/profile/widgets/profile_text_filed.dart';
+import 'package:foodie/features/profile/widgets/info_item.dart';
+import 'package:foodie/features/profile/widgets/notification_icon.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -15,12 +22,48 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
+  File? imageFile;
   String selectedPayment = "Debit Card";
 
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final deliveryAddressController = TextEditingController();
   final passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileImage();
+  }
+
+  Future<void> _loadProfileImage() async {
+    final imagePath = await PrefHelpers.getProfileImagePath();
+
+    if (!mounted || imagePath == null) return;
+
+    final savedImage = File(imagePath);
+    if (await savedImage.exists()) {
+      PrefHelpers.profileImagePath.value = savedImage.path;
+      setState(() {
+        imageFile = savedImage;
+      });
+    } else {
+      await PrefHelpers.clearProfileImage();
+    }
+  }
+
+  Future<void> saveProfileImage(File image) async {
+    await PrefHelpers.saveProfileImage(image);
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    deliveryAddressController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +76,22 @@ class _ProfileViewState extends State<ProfileView> {
           backgroundColor: AppColors.white,
           elevation: 0,
           scrolledUnderElevation: 0,
-          iconTheme: const IconThemeData(color: AppColors.white),
+          centerTitle: false,
+          title: Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Row(
+              children: [
+                const CustomText(
+                  text: 'Profile',
+                  fontSize: 22,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.black,
+                ),
+                const Spacer(),
+                const Notificationicon(),
+              ],
+            ),
+          ),
         ),
 
         body: SingleChildScrollView(
@@ -41,65 +99,171 @@ class _ProfileViewState extends State<ProfileView> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Gap(25),
+                Center(
+                  child: SizedBox(
+                    width: 125,
+                    height: 125,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      alignment: Alignment.center,
+                      children: [
+                        // Avatar
+                        Container(
+                          width: 118,
+                          height: 118,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.primary.withOpacity(0.08),
+                          ),
+                          clipBehavior: Clip.antiAlias,
+                          child: imageFile != null
+                              ? Image.file(imageFile!, fit: BoxFit.cover)
+                              : const Icon(
+                                  CupertinoIcons.person_fill,
+                                  size: 58,
+                                  color: AppColors.primary,
+                                ),
+                        ),
 
-                CircleAvatar(
-                  radius: 62,
-                  backgroundColor: AppColors.primary,
-                  child: const CircleAvatar(
-                    radius: 59,
-                    backgroundColor: AppColors.white,
-                    child: Icon(
-                      Icons.person,
-                      size: 70,
-                      color: AppColors.primary,
+                        // Camera Button
+                        Positioned(
+                          right: -2,
+                          bottom: 2,
+                          child: Container(
+                            width: 35,
+                            height: 35,
+                            decoration: BoxDecoration(
+                              color: AppColors.primary,
+                              borderRadius: BorderRadius.circular(11),
+                              border: Border.all(
+                                color: AppColors.white,
+                                width: 3,
+                              ),
+                            ),
+                            child: GestureDetector(
+                              onTap: () async {
+                                final pickedImage = await pickimage();
+                                if (pickedImage != null && mounted) {
+                                  setState(() {
+                                    imageFile = pickedImage;
+                                  });
+                                  await saveProfileImage(pickedImage);
+                                }
+                              },
+                              child: const Icon(
+                                CupertinoIcons.camera_fill,
+                                color: AppColors.white,
+                                size: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
 
-                const Gap(30),
+                const Gap(5),
 
-                ProfileTextField(
-                  controller: nameController,
-                  labelText: 'Name',
-                  icon: CupertinoIcons.person_fill,
+                Center(
+                  child: CustomText(
+                    text: 'Eslam Wael',
+                    fontSize: 25,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.black,
+                  ),
                 ),
 
-                const Gap(15),
+                const Gap(4),
 
-                ProfileTextField(
-                  controller: emailController,
-                  labelText: 'Email',
-                  icon: CupertinoIcons.mail,
-                ),
-
-                const Gap(15),
-
-                ProfileTextField(
-                  controller: deliveryAddressController,
-                  labelText: 'Delivery Address',
-                  icon: CupertinoIcons.location_fill,
-                ),
-
-                const Gap(15),
-
-                ProfileTextField(
-                  controller: passwordController,
-                  labelText: 'Password',
-                  icon: CupertinoIcons.lock_fill,
+                Center(
+                  child: CustomText(
+                    text: 'eslam@gmail.com',
+                    fontSize: 15,
+                    color: Colors.grey,
+                  ),
                 ),
 
                 const Gap(25),
 
-                const Divider(
-                  color: AppColors.borderGrey,
-                  thickness: 1.5,
-                  indent: 20,
-                  endIndent: 20,
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 15,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.07),
+                        blurRadius: 15,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Section Title
+                      CustomText(
+                        text: 'Account Information',
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.primary,
+                      ),
+
+                      const Gap(12),
+
+                      // Name
+                      buildInfoItem(
+                        icon: Icons.person,
+                        title: 'Name',
+                        value: 'Eslam Wael',
+                      ),
+
+                      const Devider(),
+
+                      // Email
+                      buildInfoItem(
+                        icon: Icons.email,
+                        title: 'Email',
+                        value: 'eslam@gmail.com',
+                      ),
+
+                      const Devider(),
+
+                      // Address
+                      buildInfoItem(
+                        icon: Icons.location_on,
+                        title: 'Delivery Address',
+                        value: 'Tanta, Egypt',
+                      ),
+
+                      const Devider(),
+
+                      // Password
+                      buildInfoItem(
+                        icon: Icons.lock,
+                        title: 'Password',
+                        value: '••••••••',
+                      ),
+                    ],
+                  ),
                 ),
 
-                const Gap(15),
+                const Gap(10),
+
+                CustomText(
+                  text: 'Payment Method',
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.primary,
+                ),
+
+                const Gap(12),
 
                 PaymentMethods(
                   image: 'assets/images/image 13.png',
@@ -109,52 +273,53 @@ class _ProfileViewState extends State<ProfileView> {
                   groupValue: selectedPayment,
                   tilecolor: AppColors.primary,
                   textcolor: Colors.black,
+
                   onTap: () {
                     setState(() {
                       selectedPayment = 'Debit Card';
                     });
                   },
+
                   onChanged: (value) {
+                    if (value == null) return;
+
                     setState(() {
-                      selectedPayment = value!;
+                      selectedPayment = value;
                     });
                   },
                 ),
 
-                const Gap(20),
+                const Gap(22),
 
-                Row(
-                  children: [
-                    Expanded(
-                      child: CustomContanier(
-                        text: 'Edit Profile',
-                        color: AppColors.primary,
-                        height: 55,
-                        radius: 15,
-                        textColor: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        onTap: () {},
-                        width: double.infinity,
-                      ),
-                    ),
+                CustomContanier(
+                  fontSize: 17,
+                  icon: Icons.edit_outlined,
+                  text: 'Edit Profile',
+                  color: AppColors.primary,
+                  height: 45,
+                  radius: 10,
+                  textColor: AppColors.white,
+                  fontWeight: FontWeight.w600,
+                  width: double.infinity,
+                  onTap: () {},
+                ),
 
-                    const Gap(15),
+                const Gap(12),
 
-                    Expanded(
-                      child: CustomContanier(
-                        text: 'Logout',
-                        color: AppColors.paleRed,
-                        height: 55,
-                        radius: 15,
-                        textColor: AppColors.errorRed,
-                        fontWeight: FontWeight.w600,
-                        onTap: () {
-                          context.go('/Login');
-                        },
-                        width: double.infinity,
-                      ),
-                    ),
-                  ],
+                // Logout
+                CustomContanier(
+                  fontSize: 17,
+                  text: 'Logout',
+                  icon: Icons.logout_outlined,
+                  color: AppColors.paleRed,
+                  height: 45,
+                  radius: 10,
+                  textColor: AppColors.errorRed,
+                  fontWeight: FontWeight.w600,
+                  width: double.infinity,
+                  onTap: () {
+                    context.go('/Login');
+                  },
                 ),
 
                 const Gap(30),
@@ -165,4 +330,11 @@ class _ProfileViewState extends State<ProfileView> {
       ),
     );
   }
+}
+
+Future<File?> pickimage() async {
+  final pickedImage = await ImagePicker().pickImage(
+    source: ImageSource.gallery,
+  );
+  return pickedImage == null ? null : File(pickedImage.path);
 }

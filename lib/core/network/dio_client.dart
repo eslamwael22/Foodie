@@ -8,10 +8,6 @@ class DioClient {
       baseUrl: 'https://ecommerce.routemisr.com/api/v1/',
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 10),
-      validateStatus: (status) {
-        // Throw error for non-2xx status codes
-        return status != null && status < 400;
-      },
     ),
   );
 
