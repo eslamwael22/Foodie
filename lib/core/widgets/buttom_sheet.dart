@@ -79,7 +79,6 @@ class ButtomSheet extends StatelessWidget {
           const Spacer(),
 
           CustomContanier(
-            icon: Icons.payments,
             onTap: onTap,
             text: text,
             width: width ?? 160,

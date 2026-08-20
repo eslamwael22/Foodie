@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:foodie/core/constants/app_colors.dart';
 import 'package:foodie/core/widgets/buttom_sheet.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
-import 'package:foodie/features/checkout/widgets/custom_order_summary.dart';
 import 'package:foodie/core/widgets/payment_methods.dart';
+import 'package:foodie/features/checkout/widgets/checkout_section_title.dart';
+import 'package:foodie/features/checkout/widgets/order_summary_card.dart';
 import 'package:foodie/features/checkout/widgets/sucsess_dialog.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -23,65 +24,45 @@ class _CheckoutViewState extends State<CheckoutView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      appBar: AppBar(
-        backgroundColor: AppColors.white,
-        scrolledUnderElevation: 0,
-      ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(bottom: 140),
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 140),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              child: CustomText(
-                text: 'Order Summary',
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
+            Gap(70),
+
+            const CheckoutSectionTitle(
+              title: 'Order Summary',
+              icon: CupertinoIcons.doc_text,
+            ),
+            const OrderSummaryCard(),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 14),
+              child: Divider(color: AppColors.borderGrey),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomText(
+                    text: 'Estimated Delivery Time',
+                    fontSize: 15,
+                    color: AppColors.textGrey,
+                  ),
+                  CustomText(
+                    text: '15 - 30 min',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primary,
+                  ),
+                ],
               ),
-            ),
-            CustomOrderSummary(
-              text: 'Order',
-              price: '\$18.19',
-              fontWeight: FontWeight.w300,
-            ),
-            CustomOrderSummary(
-              text: 'Taxes',
-              price: '\$0.5',
-              fontWeight: FontWeight.w300,
-            ),
-            CustomOrderSummary(
-              text: 'Delivery Fees',
-              price: '\$5',
-              fontWeight: FontWeight.w300,
             ),
             Gap(30),
-            Divider(
-              color: Colors.grey.shade300,
-              thickness: 1.5,
-              indent: 20,
-              endIndent: 40,
-            ),
-            Gap(10),
-            CustomOrderSummary(
-              text: 'Total',
-              price: '\$23.74',
-              fontWeight: FontWeight.bold,
-            ),
-            Gap(10),
-            CustomOrderSummary(
-              text: 'Estimated Delivery Time',
-              price: '15-30 min',
-              fontWeight: FontWeight.w400,
-            ),
-            Gap(40),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              child: CustomText(
-                text: 'Payment Methods',
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              ),
+            const CheckoutSectionTitle(
+              title: 'Payment Method',
+              icon: CupertinoIcons.creditcard,
             ),
             PaymentMethods(
               onTap: () {
@@ -97,11 +78,11 @@ class _CheckoutViewState extends State<CheckoutView> {
                   selectedPayment = value!;
                 });
               },
-              tilecolor: AppColors.secondary,
+              tilecolor: AppColors.primary,
               value: 'Cash on Delivery',
               textcolor: AppColors.white,
             ),
-            Gap(10),
+            const SizedBox(height: 8),
             PaymentMethods(
               onTap: () {
                 setState(() {
@@ -122,7 +103,7 @@ class _CheckoutViewState extends State<CheckoutView> {
               textcolor: Colors.black,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18),
+              padding: const EdgeInsets.only(left: 4, top: 8),
               child: Row(
                 children: [
                   Checkbox(
@@ -134,10 +115,12 @@ class _CheckoutViewState extends State<CheckoutView> {
                       });
                     },
                   ),
-                  const CustomText(
-                    text: 'Save card details for future payments',
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
+                  const Expanded(
+                    child: CustomText(
+                      text: 'Save card details for future payments',
+                      fontSize: 14,
+                      color: AppColors.textGrey,
+                    ),
                   ),
                 ],
               ),
@@ -146,7 +129,7 @@ class _CheckoutViewState extends State<CheckoutView> {
         ),
       ),
       bottomNavigationBar: Container(
-        color: Colors.grey.shade200,
+        color: AppColors.background,
         child: SafeArea(
           top: false,
           child: ButtomSheet(
@@ -167,7 +150,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                 ),
               );
             },
-            price: '23.74',
+            price: '23.69',
             pricetext: 'Total Price',
             text: 'Pay Now',
           ),

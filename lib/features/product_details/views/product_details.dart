@@ -6,6 +6,7 @@ import 'package:foodie/core/widgets/custom_text.dart';
 import 'package:foodie/features/product_details/data/options_data.dart';
 import 'package:foodie/features/product_details/data/toping_data.dart';
 import 'package:foodie/features/product_details/widgets/CustomSlider.dart';
+import 'package:foodie/features/product_details/widgets/FlyToCartController.dart';
 import 'package:foodie/features/product_details/widgets/toping_card.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -21,31 +22,85 @@ class _ProductDetailsviewState extends State<ProductDetailsview> {
   static const double basePrice = 18.19;
   double totalPrice = basePrice;
 
+  // 👈 مفتاحين جدد: واحد لأيقونة الكارت، وواحد لزرار Add to Cart
+  final GlobalKey _cartIconKey = GlobalKey();
+  final GlobalKey _addToCartKey = GlobalKey();
+
+  int cartCount = 0;
+
   void _addItemPrice(String price) {
     setState(() {
       totalPrice += double.parse(price);
     });
   }
 
+  // 👈 دالة جديدة: بتشغّل حركة الطيران وبعدين تزوّد العداد
+  void _handleAddToCart() {
+    FlyToCartController.fly(
+      context: context,
+      fromKey: _addToCartKey,
+      toKey: _cartIconKey,
+      flyingWidget: Container(
+        width: 36,
+        height: 36,
+        decoration: const BoxDecoration(
+          color: AppColors.primary,
+          shape: BoxShape.circle,
+        ),
+        child: const Icon(Icons.shopping_bag, color: Colors.white, size: 18),
+      ),
+      onComplete: () {
+        if (mounted) {
+          setState(() {
+            cartCount++;
+            context.push('/Cart');
+          });
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: AppColors.white,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        centerTitle: false,
+        title: Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: Row(
+            children: [
+              const Spacer(),
+              IconButton(
+                key: _cartIconKey,
+                onPressed: () {
+                  context.push('/Cart');
+                },
+                icon: Badge(
+                  backgroundColor: AppColors.primary,
+                  label: Text(
+                    '$cartCount',
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                  child: const Icon(
+                    Icons.shopping_cart_outlined,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(bottom: 120),
+        padding: const EdgeInsets.only(bottom: 140),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 20, left: 5),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: IconButton(
-                  onPressed: () => Navigator.of(context).maybePop(),
-                  icon: const Icon(CupertinoIcons.back, size: 30),
-                ),
-              ),
-            ),
             Row(
               children: [
                 Image.asset('assets/images/pngwing 12.png', height: 250),
@@ -177,13 +232,15 @@ class _ProductDetailsviewState extends State<ProductDetailsview> {
         color: Colors.grey.shade200,
         child: SafeArea(
           top: false,
-          child: ButtomSheet(
-            text: 'Add to Cart',
-            onTap: () {
-              context.push('/Cart');
-            },
-            price: totalPrice.toStringAsFixed(2),
-            pricetext: 'Total',
+          child: Container(
+            key: _addToCartKey,
+            child: ButtomSheet(
+              text: 'Add to Cart',
+              onTap: _handleAddToCart,
+
+              price: totalPrice.toStringAsFixed(2),
+              pricetext: 'Total',
+            ),
           ),
         ),
       ),

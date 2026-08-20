@@ -8,37 +8,50 @@ class PaymentMethods extends StatelessWidget {
   final String title;
   final String value;
   final String? subtitle;
-  final Color textcolor;
-  final Color tilecolor;
   final String groupValue;
   final VoidCallback? onTap;
-
   final ValueChanged<String?> onChanged;
+  final bool showRadio;
+
   const PaymentMethods({
     super.key,
     required this.image,
     required this.title,
     required this.value,
-    required this.tilecolor,
     this.onTap,
     required this.onChanged,
     required this.groupValue,
-    required this.textcolor,
     this.subtitle,
+    required Color tilecolor,
+    this.showRadio = true,
   });
 
   @override
   Widget build(BuildContext context) {
+    final bool isSelected = value == groupValue; // 👈 بنحدد الحالة هنا
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       child: Material(
-        color: tilecolor,
+        color: isSelected
+            ? AppColors
+                  .primary // ✅ مختار → لون التطبيق الأساسي
+            : AppColors.white, // ✅ غير مختار → أبيض مع حدود
         borderRadius: BorderRadius.circular(20),
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(20),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: isSelected
+                  ? null
+                  : Border.all(
+                      color: AppColors.primary.withOpacity(0.25),
+                      width: 1.2,
+                    ),
+            ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -52,30 +65,48 @@ class PaymentMethods extends StatelessWidget {
                       CustomText(
                         text: title,
                         fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                        color: textcolor,
+                        fontWeight: FontWeight.w500,
+                        color: isSelected ? AppColors.white : Colors.black87,
                       ),
                       if (subtitle != null) ...[
                         const SizedBox(height: 4),
                         CustomText(
                           text: subtitle!,
                           fontSize: 14,
-                          color: Colors.grey,
+                          color: isSelected
+                              ? AppColors.white.withOpacity(0.75)
+                              : Colors.grey.shade600,
                         ),
                       ],
                     ],
                   ),
                 ),
-                Radio<String?>(
-                  enabled: true,
-                  focusColor: Colors.yellowAccent,
-                  hoverColor: Colors.yellowAccent,
-                  activeColor: Colors.white,
-                  value: value,
-                  groupValue: groupValue,
-                  onChanged: onChanged,
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
+                if (showRadio)
+                  Container(
+                    width: 24,
+                    height: 24,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: isSelected
+                            ? AppColors.white
+                            : AppColors.primary.withOpacity(0.4),
+                        width: 2,
+                      ),
+                    ),
+                    child: isSelected
+                        ? Center(
+                            child: Container(
+                              width: 12,
+                              height: 12,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.white,
+                              ),
+                            ),
+                          )
+                        : null,
+                  ),
               ],
             ),
           ),

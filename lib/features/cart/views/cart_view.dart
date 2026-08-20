@@ -34,17 +34,6 @@ class _CartViewState extends State<CartView> {
                 color: AppColors.black,
               ),
               const Spacer(),
-              IconButton(
-                onPressed: () {},
-                icon: Badge(
-                  backgroundColor: AppColors.primary,
-                  label: Text('4', style: TextStyle(color: Colors.white)),
-                  child: const Icon(
-                    Icons.shopping_cart_outlined,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
             ],
           ),
         ),

@@ -287,7 +287,7 @@ class _ProfileViewState extends State<ProfileView> {
                   value: 'Debit Card',
                   groupValue: selectedPayment,
                   tilecolor: AppColors.primary,
-                  textcolor: Colors.black,
+                  showRadio: false,
 
                   onTap: () {
                     setState(() {
