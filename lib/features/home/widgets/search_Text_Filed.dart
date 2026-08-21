@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class Searchtextfiled extends StatelessWidget {
   final String hintText;
   final IconData icon;
+  final ValueChanged<String>? onChanged;
   const Searchtextfiled({
     super.key,
     required this.hintText,
     required this.icon,
+    this.onChanged,
   });
 
   @override
@@ -16,6 +18,7 @@ class Searchtextfiled extends StatelessWidget {
       elevation: 7,
       child: TextField(
         keyboardType: TextInputType.visiblePassword,
+        onChanged: onChanged,
         decoration: InputDecoration(
           hintText: hintText,
           hintStyle: TextStyle(color: Colors.grey),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:foodie/core/constants/app_colors.dart';
 import 'package:foodie/core/widgets/buttom_sheet.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
+import 'package:foodie/features/home/data/models/product_model.dart';
 import 'package:foodie/features/product_details/data/options_data.dart';
 import 'package:foodie/features/product_details/data/toping_data.dart';
 import 'package:foodie/features/product_details/widgets/CustomSlider.dart';
@@ -12,21 +13,28 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class ProductDetailsview extends StatefulWidget {
-  const ProductDetailsview({super.key});
+  final ProductModel product;
+
+  const ProductDetailsview({super.key, required this.product});
 
   @override
   State<ProductDetailsview> createState() => _ProductDetailsviewState();
 }
 
 class _ProductDetailsviewState extends State<ProductDetailsview> {
-  static const double basePrice = 18.19;
-  double totalPrice = basePrice;
+  late double totalPrice;
 
   // 👈 مفتاحين جدد: واحد لأيقونة الكارت، وواحد لزرار Add to Cart
   final GlobalKey _cartIconKey = GlobalKey();
   final GlobalKey _addToCartKey = GlobalKey();
 
   int cartCount = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    totalPrice = widget.product.price;
+  }
 
   void _addItemPrice(String price) {
     setState(() {
@@ -237,8 +245,7 @@ class _ProductDetailsviewState extends State<ProductDetailsview> {
             child: ButtomSheet(
               text: 'Add to Cart',
               onTap: _handleAddToCart,
-
-              price: totalPrice.toStringAsFixed(2),
+              price: totalPrice.toString(),
               pricetext: 'Total',
             ),
           ),

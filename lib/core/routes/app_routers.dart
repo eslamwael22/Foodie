@@ -5,6 +5,7 @@ import 'package:foodie/features/checkout/views/checkout_view.dart';
 import 'package:foodie/features/home/views/home_view.dart';
 import 'package:foodie/features/orderHistory/views/orderHistory.dart';
 import 'package:foodie/features/product_details/views/product_details.dart';
+import 'package:foodie/features/home/data/models/product_model.dart';
 import 'package:foodie/features/profile/views/profile_view.dart';
 import 'package:foodie/roots.dart';
 import 'package:foodie/splash_view.dart';
@@ -18,7 +19,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(path: '/', builder: (context, state) => SplashView()),
     GoRoute(
       path: '/Proudcts',
-      builder: (context, state) => ProductDetailsview(),
+      builder: (context, state) =>
+          ProductDetailsview(product: state.extra! as ProductModel),
     ),
     GoRoute(path: '/Home', builder: (context, state) => HomeView()),
     GoRoute(path: '/Roots', builder: (context, state) => Roots()),

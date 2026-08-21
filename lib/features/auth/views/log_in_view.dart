@@ -55,6 +55,13 @@ class _LogInViewState extends State<LogInView> {
   }
 
   @override
+  void initState() {
+    emailController.text = 'eldasheslam220@gmail.com';
+    passwordController.text = 'Eslam@123';
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
