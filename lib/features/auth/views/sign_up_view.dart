@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:foodie/core/constants/app_colors.dart';
 import 'package:foodie/core/network/api_errors.dart';
+import 'package:foodie/core/utils/pref_helpers.dart';
 import 'package:foodie/core/widgets/custom_snak_bar.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
 import 'package:foodie/core/widgets/custom_text_field.dart';
@@ -37,6 +38,8 @@ class _SignUpViewState extends State<SignUpView> {
       );
 
       if (mounted && user != null) {
+        await PrefHelpers.clearProfileImage();
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Account created successfully!'),

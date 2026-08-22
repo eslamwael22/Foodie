@@ -1,4 +1,5 @@
 import 'package:foodie/core/network/api_service.dart';
+import 'package:foodie/core/utils/pref_helpers.dart';
 import 'package:foodie/features/auth/data/auth_model.dart';
 
 class AuthRepo {
@@ -10,11 +11,16 @@ class AuthRepo {
         'email': email,
         'password': password,
       });
+
       final user = UserModel.fromJson(response);
-      // Validate that we received a token
+
       if (user.token == null || user.token!.isEmpty) {
         throw Exception('Login failed: No authentication token received');
       }
+
+      // Save token
+      await PrefHelpers.saveToken(user.token!);
+
       return user;
     } catch (e) {
       rethrow;
@@ -35,11 +41,16 @@ class AuthRepo {
         'password': password,
         'rePassword': rePassword,
       });
+
       final user = UserModel.fromJson(response);
-      // Validate that we received a token
+
       if (user.token == null || user.token!.isEmpty) {
-        throw Exception('Login failed: No authentication token received');
+        throw Exception('Signup failed: No authentication token received');
       }
+
+      // Save token
+      await PrefHelpers.saveToken(user.token!);
+
       return user;
     } catch (e) {
       rethrow;

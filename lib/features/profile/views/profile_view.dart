@@ -332,7 +332,10 @@ class _ProfileViewState extends State<ProfileView> {
                   textColor: AppColors.errorRed,
                   fontWeight: FontWeight.w600,
                   width: double.infinity,
-                  onTap: () {
+                  onTap: () async {
+                    await PrefHelpers.clearToken();
+                    await PrefHelpers.clearUserData();
+                    await PrefHelpers.clearProfileImage();
                     context.go('/Login');
                   },
                 ),

@@ -9,8 +9,8 @@ class ApiService {
     try {
       final response = await DioClient().dio.get(endpoint);
       return response.data;
-    } catch (e) {
-      throw ApiError(message: e.toString());
+    } on DioException catch (e) {
+      throw ApiExceptions.handleError(e);
     }
   }
 
@@ -30,8 +30,8 @@ class ApiService {
     try {
       final response = await DioClient().dio.put(endpoint, data: data);
       return response.data;
-    } catch (e) {
-      throw ApiError(message: e.toString());
+    } on DioException catch (e) {
+      throw ApiExceptions.handleError(e);
     }
   }
 
@@ -40,8 +40,8 @@ class ApiService {
     try {
       final response = await DioClient().dio.delete(endpoint);
       return response.data;
-    } catch (e) {
-      throw ApiError(message: e.toString());
+    } on DioException catch (e) {
+      throw ApiExceptions.handleError(e);
     }
   }
 }

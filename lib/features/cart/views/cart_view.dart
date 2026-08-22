@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:foodie/core/constants/app_colors.dart';
+import 'package:foodie/core/network/api_errors.dart';
+import 'package:foodie/core/network/api_service.dart';
+import 'package:foodie/core/widgets/custom_snak_bar.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
+import 'package:foodie/features/cart/data/cart_model.dart';
+import 'package:foodie/features/cart/data/cart_repository.dart';
 import 'package:foodie/features/cart/widgets/cart_item.dart';
 import 'package:foodie/features/cart/widgets/checkout_ani.dart';
+import 'package:foodie/features/home/data/models/product_model.dart';
+import 'package:foodie/features/home/data/services/product_service.dart';
 import 'package:gap/gap.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class CartView extends StatefulWidget {
   const CartView({super.key});
@@ -13,74 +21,225 @@ class CartView extends StatefulWidget {
 }
 
 class _CartViewState extends State<CartView> {
+  final CartRepository _cartRepository = CartRepository(ApiService());
+  final ProductService _productService = ProductService();
+
+  CartModel? _cart;
+  List<ProductModel> _firebaseProducts = [];
+  bool _isLoading = true;
+  bool _isUpdating = false;
+  String? _errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCart();
+  }
+
+  Future<void> _loadCart() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      final cart = await _cartRepository.getCart();
+      final firebaseProducts = await _productService.getProducts();
+      if (!mounted) return;
+
+      setState(() {
+        _cart = cart;
+        _firebaseProducts = firebaseProducts;
+        _isLoading = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+
+      setState(() {
+        _errorMessage = e is ApiError ? e.message : e.toString();
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _updateCount(CartProduct item, int count) async {
+    if (_isUpdating || count < 1) return;
+    setState(() => _isUpdating = true);
+
+    try {
+      final cart = await _cartRepository.updateCartItemCount(
+        item.product.id,
+        count,
+      );
+      if (!mounted) return;
+
+      setState(() => _cart = cart);
+    } catch (e) {
+      _showError(e);
+    } finally {
+      if (mounted) setState(() => _isUpdating = false);
+    }
+  }
+
+  Future<void> _removeItem(CartProduct item) async {
+    if (_isUpdating) return;
+
+    setState(() => _isUpdating = true);
+
+    try {
+      final cart = await _cartRepository.removeCartItem(item.product.id);
+      if (!mounted) return;
+
+      setState(() => _cart = cart);
+    } catch (e) {
+      _showError(e);
+    } finally {
+      if (mounted) setState(() => _isUpdating = false);
+    }
+  }
+
+  void _showError(Object e) {
+    if (!mounted) return;
+
+    final message = e is ApiError ? e.message : e.toString();
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(customSnackBar(message: message));
+  }
+
   @override
   Widget build(BuildContext context) {
+    final products = _cart?.products ?? [];
+
     return Scaffold(
       backgroundColor: Colors.white,
-
       appBar: AppBar(
         backgroundColor: AppColors.white,
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: false,
-        title: Padding(
-          padding: const EdgeInsets.only(top: 10),
-          child: Row(
-            children: [
-              const CustomText(
-                text: 'Cart',
-                fontSize: 22,
-                fontWeight: FontWeight.w600,
-                color: AppColors.black,
-              ),
-              const Spacer(),
-            ],
+        title: const Padding(
+          padding: EdgeInsets.only(top: 10),
+          child: CustomText(
+            text: 'Cart',
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
+            color: AppColors.black,
           ),
         ),
       ),
+      body: _buildBody(products),
+      bottomNavigationBar: products.isEmpty ? null : _buildBottomBar(),
+    );
+  }
 
-      body: ListView.builder(
+  Widget _buildBody(List<CartProduct> products) {
+    if (_isLoading) {
+      return Center(
+        child: LoadingAnimationWidget.dotsTriangle(
+          color: AppColors.primary,
+          size: 80,
+        ),
+      );
+    }
+
+    if (_errorMessage != null) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomText(
+                text: _errorMessage!,
+                fontSize: 16,
+                color: AppColors.textGrey,
+              ),
+              const Gap(16),
+              ElevatedButton(
+                onPressed: _loadCart,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text('Try Again'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (products.isEmpty) {
+      return const Center(
+        child: CustomText(
+          text: 'Your cart is empty..',
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+          color: AppColors.primary,
+        ),
+      );
+    }
+
+    return RefreshIndicator(
+      color: AppColors.primary,
+      onRefresh: _loadCart,
+      child: ListView.builder(
         padding: const EdgeInsets.fromLTRB(14, 14, 14, 120),
-        itemCount: 4,
+        itemCount: products.length,
         itemBuilder: (context, index) {
-          return const Padding(
-            padding: EdgeInsets.only(bottom: 8),
-            child: CartItem(),
+          final item = products[index];
+          final firebaseProduct = _firebaseProducts
+              .where((product) => product.apiProductId == item.product.id)
+              .firstOrNull;
+
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Opacity(
+              opacity: _isUpdating ? 0.65 : 1,
+              child: CartItem(
+                item: item,
+                firebaseProduct: firebaseProduct,
+                onIncrement: () => _updateCount(item, item.count + 1),
+                onDecrement: () => _updateCount(item, item.count - 1),
+                onRemove: () => _removeItem(item),
+              ),
+            ),
           );
         },
       ),
+    );
+  }
 
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-          child: Container(
-            height: 90,
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Row(
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const CustomText(text: 'Total', fontSize: 20),
-                    const Gap(5),
-                    CustomText(
-                      text: '\$18.19',
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ],
-                ),
-
-                const Spacer(),
-
-                const AnimatedCheckoutButton(),
-              ],
-            ),
+  Widget _buildBottomBar() {
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+        child: Container(
+          height: 90,
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Row(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const CustomText(text: 'Total', fontSize: 20),
+                  const Gap(5),
+                  CustomText(
+                    text: '\$${_cart?.totalCartPrice ?? 0}',
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ],
+              ),
+              const Spacer(),
+              const AnimatedCheckoutButton(),
+            ],
           ),
         ),
       ),

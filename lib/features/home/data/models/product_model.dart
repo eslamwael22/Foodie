@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductModel {
+  final String apiProductId;
   final String id;
   final String imageUrl;
   final String name;
@@ -17,6 +18,7 @@ class ProductModel {
     required this.rating,
     required this.subtitle,
     this.category = '',
+    required this.apiProductId,
   });
 
   factory ProductModel.fromFirestore(
@@ -32,6 +34,7 @@ class ProductModel {
       rating: (data['rating'] ?? 0).toDouble(),
       subtitle: data['subtitle'] ?? '',
       category: _readCategory(data),
+      apiProductId: data['apiProductId'] ?? data['id'] ?? '',
     );
   }
 

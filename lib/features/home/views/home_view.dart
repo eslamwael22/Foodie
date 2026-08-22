@@ -199,9 +199,9 @@ class _HomeViewState extends State<HomeView> {
                       // Loading
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(
-                          child: LoadingAnimationWidget.staggeredDotsWave(
+                          child: LoadingAnimationWidget.dotsTriangle(
                             color: AppColors.primary,
-                            size: 45,
+                            size: 80,
                           ),
                         );
                       }

@@ -18,8 +18,10 @@ class DioClient {
         onRequest: (options, handler) async {
           // بتتنفذ قبل ما يبعت الريكوست
           final token = await PrefHelpers.getToken();
-          if (token != null && token.isNotEmpty)
-            options.headers['Authorization'] = 'Bearer $token'; // Replace
+          if (token != null && token.isNotEmpty) {
+            options.headers['token'] = token;
+            options.headers['Authorization'] = 'Bearer $token';
+          }
           return handler.next(options);
         },
       ),

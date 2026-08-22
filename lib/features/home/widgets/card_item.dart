@@ -42,9 +42,9 @@ class _CarditemState extends State<Carditem> {
                   // Loading
                   placeholder: (context, url) {
                     return Center(
-                      child: LoadingAnimationWidget.fallingDot(
+                      child: LoadingAnimationWidget.dotsTriangle(
                         color: AppColors.primary,
-                        size: 40,
+                        size: 30,
                       ),
                     );
                   },

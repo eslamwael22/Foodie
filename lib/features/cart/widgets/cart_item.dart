@@ -2,30 +2,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodie/core/widgets/custom_contanier.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
+import 'package:foodie/features/cart/data/cart_model.dart';
 import 'package:foodie/features/cart/widgets/counter_button.dart';
+import 'package:foodie/features/cart/widgets/product_image.dart';
+import 'package:foodie/features/home/data/models/product_model.dart';
 import 'package:gap/gap.dart';
 
-class CartItem extends StatefulWidget {
-  const CartItem({super.key});
+class CartItem extends StatelessWidget {
+  final CartProduct item;
+  final ProductModel? firebaseProduct;
+  final VoidCallback onIncrement;
+  final VoidCallback onDecrement;
+  final VoidCallback onRemove;
 
-  @override
-  State<CartItem> createState() => _CartItemState();
-}
-
-class _CartItemState extends State<CartItem> {
-  int quantity = 1;
-
-  void increment() {
-    setState(() {
-      quantity++;
-    });
-  }
-
-  void decrement() {
-    setState(() {
-      if (quantity > 1) quantity--;
-    });
-  }
+  const CartItem({
+    super.key,
+    required this.item,
+    this.firebaseProduct,
+    required this.onIncrement,
+    required this.onDecrement,
+    required this.onRemove,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,52 +36,61 @@ class _CartItemState extends State<CartItem> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/images/image 4.png',
-                    height: 100,
-                    width: 150,
-                    fit: BoxFit.contain,
-                  ),
-                  const CustomText(
-                    text: 'Hamburger',
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  const Gap(2),
-                  const CustomText(text: 'Veggie Burger'),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ProductImage(
+                      imageUrl:
+                          firebaseProduct?.imageUrl ?? item.product.imageCover,
+                    ),
+                    CustomText(
+                      text: firebaseProduct?.name ?? item.product.title,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    const Gap(2),
+                  ],
+                ),
               ),
-
+              const Gap(10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Gap(20),
+                  const Gap(14),
                   Row(
                     children: [
                       counterButton(
                         icon: CupertinoIcons.minus,
-                        onTap: decrement,
+                        onTap: onDecrement,
                       ),
-                      const Gap(30),
+                      const Gap(24),
                       CustomText(
-                        text: '$quantity',
+                        text: '${item.count}',
                         fontSize: 20,
                         fontWeight: FontWeight.w500,
                       ),
-                      const Gap(30),
-                      counterButton(icon: CupertinoIcons.add, onTap: increment),
+                      const Gap(24),
+                      counterButton(
+                        icon: CupertinoIcons.add,
+                        onTap: onIncrement,
+                      ),
                     ],
                   ),
-                  const Gap(20),
+                  const Gap(14),
+                  CustomText(
+                    text: '\L.E ${firebaseProduct?.price ?? item.price}',
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  const Gap(12),
                   CustomContanier(
                     text: 'Remove',
                     width: 150,
-                    height: 45,
+                    height: 42,
                     radius: 15,
-                    onTap: () {},
+                    onTap: onRemove,
+                    fontSize: 16,
                     fontWeight: FontWeight.w400,
                   ),
                 ],

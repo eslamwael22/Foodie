@@ -1,11 +1,9 @@
-import 'package:dio/dio.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:foodie/core/constants/app_colors.dart';
 import 'package:foodie/core/network/api_errors.dart';
-import 'package:foodie/core/network/api_exceptions.dart';
 import 'package:foodie/core/utils/pref_helpers.dart';
 import 'package:foodie/core/widgets/custom_snak_bar.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
@@ -16,16 +14,18 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class LogInView extends StatefulWidget {
-  LogInView({super.key});
+  const LogInView({super.key});
 
   @override
   State<LogInView> createState() => _LogInViewState();
 }
 
 class _LogInViewState extends State<LogInView> {
-  final emailController = TextEditingController();
+  final emailController = TextEditingController(
+    text: 'eldasheslam214@gmail.com',
+  );
+  final passwordController = TextEditingController(text: 'Eslam@123');
   final _formKey = GlobalKey<FormState>();
-  final passwordController = TextEditingController();
   AuthRepo authRepo = AuthRepo();
   Future<void> loginUser() async {
     try {
@@ -36,7 +36,7 @@ class _LogInViewState extends State<LogInView> {
       await PrefHelpers.saveToken(user.token!);
       await PrefHelpers.saveUserData(name: user.name, email: user.email);
 
-      if (mounted && user != null) {
+      if (mounted) {
         context.go('/Roots');
       }
     } catch (e) {
@@ -56,8 +56,6 @@ class _LogInViewState extends State<LogInView> {
 
   @override
   void initState() {
-    emailController.text = 'eldasheslam220@gmail.com';
-    passwordController.text = 'Eslam@123';
     super.initState();
   }
 

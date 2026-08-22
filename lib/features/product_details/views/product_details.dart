@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodie/core/constants/app_colors.dart';
+import 'package:foodie/core/network/api_errors.dart';
+import 'package:foodie/core/network/api_service.dart';
 import 'package:foodie/core/widgets/buttom_sheet.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
+import 'package:foodie/features/cart/data/cart_repository.dart';
 import 'package:foodie/features/home/data/models/product_model.dart';
 import 'package:foodie/features/product_details/data/options_data.dart';
 import 'package:foodie/features/product_details/data/toping_data.dart';
@@ -23,8 +26,7 @@ class ProductDetailsview extends StatefulWidget {
 
 class _ProductDetailsviewState extends State<ProductDetailsview> {
   late double totalPrice;
-
-  // 👈 مفتاحين جدد: واحد لأيقونة الكارت، وواحد لزرار Add to Cart
+  final CartRepository _cartRepository = CartRepository(ApiService());
   final GlobalKey _cartIconKey = GlobalKey();
   final GlobalKey _addToCartKey = GlobalKey();
 
@@ -42,30 +44,50 @@ class _ProductDetailsviewState extends State<ProductDetailsview> {
     });
   }
 
-  // 👈 دالة جديدة: بتشغّل حركة الطيران وبعدين تزوّد العداد
-  void _handleAddToCart() {
-    FlyToCartController.fly(
-      context: context,
-      fromKey: _addToCartKey,
-      toKey: _cartIconKey,
-      flyingWidget: Container(
-        width: 36,
-        height: 36,
-        decoration: const BoxDecoration(
-          color: AppColors.primary,
-          shape: BoxShape.circle,
+  Future<void> _handleAddToCart() async {
+    try {
+      final response = await _cartRepository.addToCart(
+        widget.product.apiProductId,
+      );
+
+      debugPrint('Add to cart response: $response');
+
+      if (!mounted) return;
+
+      FlyToCartController.fly(
+        context: context,
+        fromKey: _addToCartKey,
+        toKey: _cartIconKey,
+        flyingWidget: Container(
+          width: 36,
+          height: 36,
+          decoration: const BoxDecoration(
+            color: AppColors.primary,
+            shape: BoxShape.circle,
+          ),
+          child: const Icon(Icons.shopping_bag, color: Colors.white, size: 18),
         ),
-        child: const Icon(Icons.shopping_bag, color: Colors.white, size: 18),
-      ),
-      onComplete: () {
-        if (mounted) {
+        onComplete: () {
+          if (!mounted) return;
+
           setState(() {
             cartCount++;
-            context.push('/Cart');
           });
-        }
-      },
-    );
+
+          context.push('/Cart');
+        },
+      );
+    } catch (e) {
+      debugPrint('================ CART ERROR ================');
+      debugPrint(e.toString());
+      debugPrint('============================================');
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e is ApiError ? e.message : e.toString())),
+      );
+    }
   }
 
   @override
