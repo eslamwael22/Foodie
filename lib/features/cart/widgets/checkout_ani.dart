@@ -4,7 +4,9 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class AnimatedCheckoutButton extends StatefulWidget {
-  const AnimatedCheckoutButton({super.key});
+  final double totalPrice;
+
+  const AnimatedCheckoutButton({super.key, required this.totalPrice});
 
   @override
   State<AnimatedCheckoutButton> createState() => _AnimatedCheckoutButtonState();
@@ -59,7 +61,7 @@ class _AnimatedCheckoutButtonState extends State<AnimatedCheckoutButton>
 
     if (!mounted) return;
 
-    context.push('/Checkout');
+    context.push('/Checkout', extra: widget.totalPrice);
 
     _controller.reset();
   }

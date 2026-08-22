@@ -11,13 +11,17 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class CheckoutView extends StatefulWidget {
-  const CheckoutView({super.key});
+  final double cartTotal;
+
+  const CheckoutView({super.key, this.cartTotal = 0});
 
   @override
   State<CheckoutView> createState() => _CheckoutViewState();
 }
 
 class _CheckoutViewState extends State<CheckoutView> {
+  static const double taxes = 0.50;
+  static const double deliveryFees = 5.00;
   bool isChecked = false;
   String selectedPayment = "Cash on Delivery";
   @override
@@ -35,7 +39,11 @@ class _CheckoutViewState extends State<CheckoutView> {
               title: 'Order Summary',
               icon: CupertinoIcons.doc_text,
             ),
-            const OrderSummaryCard(),
+            OrderSummaryCard(
+              orderTotal: widget.cartTotal,
+              taxes: taxes,
+              deliveryFees: deliveryFees,
+            ),
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 14),
               child: Divider(color: AppColors.borderGrey),
@@ -150,7 +158,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                 ),
               );
             },
-            price: '23.69',
+            price: (widget.cartTotal + taxes + deliveryFees).toStringAsFixed(2),
             pricetext: 'Total Price',
             text: 'Pay Now',
           ),

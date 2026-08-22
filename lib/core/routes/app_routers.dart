@@ -25,8 +25,24 @@ final GoRouter appRouter = GoRouter(
     GoRoute(path: '/Home', builder: (context, state) => HomeView()),
     GoRoute(path: '/Roots', builder: (context, state) => Roots()),
 
-    GoRoute(path: '/Cart', builder: (context, state) => CartView()),
-    GoRoute(path: '/Checkout', builder: (context, state) => CheckoutView()),
+    GoRoute(
+      path: '/Cart',
+      builder: (context, state) {
+        final priceOverrides = state.extra is Map<String, double>
+            ? state.extra as Map<String, double>
+            : <String, double>{};
+        return CartView(priceOverrides: priceOverrides);
+      },
+    ),
+    GoRoute(
+      path: '/Checkout',
+      builder: (context, state) {
+        final cartTotal = state.extra is num
+            ? (state.extra as num).toDouble()
+            : 0.0;
+        return CheckoutView(cartTotal: cartTotal);
+      },
+    ),
     GoRoute(path: '/OrderHistory', builder: (context, state) => Orderhistory()),
   ],
 );

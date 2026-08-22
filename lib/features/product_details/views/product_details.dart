@@ -14,6 +14,7 @@ import 'package:foodie/features/product_details/widgets/FlyToCartController.dart
 import 'package:foodie/features/product_details/widgets/toping_card.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class ProductDetailsview extends StatefulWidget {
   final ProductModel product;
@@ -74,7 +75,10 @@ class _ProductDetailsviewState extends State<ProductDetailsview> {
             cartCount++;
           });
 
-          context.push('/Cart');
+          context.push(
+            '/Cart',
+            extra: <String, double>{widget.product.apiProductId: totalPrice},
+          );
         },
       );
     } catch (e) {
@@ -133,7 +137,39 @@ class _ProductDetailsviewState extends State<ProductDetailsview> {
           children: [
             Row(
               children: [
-                Image.asset('assets/images/pngwing 12.png', height: 250),
+                const Gap(6),
+                Transform.translate(
+                  offset: const Offset(0, -20),
+                  child: SizedBox(
+                    width: 180,
+                    height: 180,
+                    child: widget.product.imageUrl.isEmpty
+                        ? Image.asset(
+                            'assets/images/pngwing 12.png',
+                            fit: BoxFit.cover,
+                          )
+                        : Image.network(
+                            widget.product.imageUrl,
+                            fit: BoxFit.fill,
+                            loadingBuilder: (context, child, progress) {
+                              if (progress == null) return child;
+
+                              return Center(
+                                child: LoadingAnimationWidget.dotsTriangle(
+                                  color: AppColors.primary,
+                                  size: 50,
+                                ),
+                              );
+                            },
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                'assets/images/pngwing 12.png',
+                                fit: BoxFit.contain,
+                              );
+                            },
+                          ),
+                  ),
+                ),
                 Gap(20),
                 Expanded(
                   child: Padding(
@@ -173,14 +209,14 @@ class _ProductDetailsviewState extends State<ProductDetailsview> {
                           fontWeight: FontWeight.bold,
                         ),
                         Transform.translate(
-                          offset: const Offset(-18, 0),
+                          offset: const Offset(-17, 0),
                           child: CustomSlider(),
                         ),
                         Gap(5),
                         Row(
                           children: [
                             Image.asset('assets/images/🥶.png'),
-                            Gap(160),
+                            Gap(130),
                             Image.asset('assets/images/🌶️.png'),
                           ],
                         ),

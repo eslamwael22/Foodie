@@ -14,7 +14,9 @@ import 'package:gap/gap.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class CartView extends StatefulWidget {
-  const CartView({super.key});
+  final Map<String, double> priceOverrides;
+
+  const CartView({super.key, this.priceOverrides = const {}});
 
   @override
   State<CartView> createState() => _CartViewState();
@@ -26,6 +28,7 @@ class _CartViewState extends State<CartView> {
 
   CartModel? _cart;
   List<ProductModel> _firebaseProducts = [];
+  late final Map<String, double> _priceOverrides = {...widget.priceOverrides};
   bool _isLoading = true;
   bool _isUpdating = false;
   String? _errorMessage;
@@ -64,7 +67,28 @@ class _CartViewState extends State<CartView> {
 
   Future<void> _updateCount(CartProduct item, int count) async {
     if (_isUpdating || count < 1) return;
+    final previousCart = _cart;
+    if (previousCart == null) return;
+
+    final updatedProducts = previousCart.products.map((cartProduct) {
+      if (cartProduct.product.id != item.product.id) return cartProduct;
+
+      return CartProduct(
+        id: cartProduct.id,
+        count: count,
+        price: cartProduct.price,
+        product: cartProduct.product,
+      );
+    }).toList();
+
     setState(() => _isUpdating = true);
+    setState(() {
+      _cart = CartModel(
+        id: previousCart.id,
+        products: updatedProducts,
+        totalCartPrice: previousCart.totalCartPrice,
+      );
+    });
 
     try {
       final cart = await _cartRepository.updateCartItemCount(
@@ -75,6 +99,7 @@ class _CartViewState extends State<CartView> {
 
       setState(() => _cart = cart);
     } catch (e) {
+      if (mounted) setState(() => _cart = previousCart);
       _showError(e);
     } finally {
       if (mounted) setState(() => _isUpdating = false);
@@ -105,6 +130,24 @@ class _CartViewState extends State<CartView> {
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(customSnackBar(message: message));
+  }
+
+  double _priceFor(CartProduct item) {
+    return _priceOverrides[item.product.id]?.toDouble() ??
+        (firebaseProductFor(item)?.price ?? item.price).toDouble();
+  }
+
+  ProductModel? firebaseProductFor(CartProduct item) {
+    return _firebaseProducts
+        .where((product) => product.apiProductId == item.product.id)
+        .firstOrNull;
+  }
+
+  num _displayTotal(List<CartProduct> products) {
+    return products.fold<num>(
+      0,
+      (total, item) => total + (_priceFor(item) * item.count),
+    );
   }
 
   @override
@@ -189,21 +232,17 @@ class _CartViewState extends State<CartView> {
         itemCount: products.length,
         itemBuilder: (context, index) {
           final item = products[index];
-          final firebaseProduct = _firebaseProducts
-              .where((product) => product.apiProductId == item.product.id)
-              .firstOrNull;
+          final firebaseProduct = firebaseProductFor(item);
 
           return Padding(
             padding: const EdgeInsets.only(bottom: 8),
-            child: Opacity(
-              opacity: _isUpdating ? 0.65 : 1,
-              child: CartItem(
-                item: item,
-                firebaseProduct: firebaseProduct,
-                onIncrement: () => _updateCount(item, item.count + 1),
-                onDecrement: () => _updateCount(item, item.count - 1),
-                onRemove: () => _removeItem(item),
-              ),
+            child: CartItem(
+              item: item,
+              firebaseProduct: firebaseProduct,
+              displayPrice: _priceFor(item),
+              onIncrement: () => _updateCount(item, item.count + 1),
+              onDecrement: () => _updateCount(item, item.count - 1),
+              onRemove: () => _removeItem(item),
             ),
           );
         },
@@ -231,14 +270,16 @@ class _CartViewState extends State<CartView> {
                   const CustomText(text: 'Total', fontSize: 20),
                   const Gap(5),
                   CustomText(
-                    text: '\$${_cart?.totalCartPrice ?? 0}',
+                    text: '${_displayTotal(_cart?.products ?? [])} L.E',
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                   ),
                 ],
               ),
               const Spacer(),
-              const AnimatedCheckoutButton(),
+              AnimatedCheckoutButton(
+                totalPrice: _displayTotal(_cart?.products ?? []).toDouble(),
+              ),
             ],
           ),
         ),

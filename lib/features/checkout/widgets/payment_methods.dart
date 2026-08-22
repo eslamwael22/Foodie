@@ -33,10 +33,7 @@ class PaymentMethods extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       child: Material(
-        color: isSelected
-            ? AppColors
-                  .primary // ✅ مختار → لون التطبيق الأساسي
-            : AppColors.white, // ✅ غير مختار → أبيض مع حدود
+        color: isSelected ? AppColors.primary : AppColors.white,
         borderRadius: BorderRadius.circular(20),
         child: InkWell(
           onTap: onTap,

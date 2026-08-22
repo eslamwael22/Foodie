@@ -11,6 +11,7 @@ import 'package:gap/gap.dart';
 class CartItem extends StatelessWidget {
   final CartProduct item;
   final ProductModel? firebaseProduct;
+  final double? displayPrice;
   final VoidCallback onIncrement;
   final VoidCallback onDecrement;
   final VoidCallback onRemove;
@@ -19,6 +20,7 @@ class CartItem extends StatelessWidget {
     super.key,
     required this.item,
     this.firebaseProduct,
+    this.displayPrice,
     required this.onIncrement,
     required this.onDecrement,
     required this.onRemove,
@@ -26,6 +28,12 @@ class CartItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final unitPrice =
+        displayPrice ??
+        firebaseProduct?.price.toDouble() ??
+        item.price.toDouble();
+    final itemTotalPrice = unitPrice * item.count;
+
     return SizedBox(
       height: 185,
       child: Card(
@@ -79,7 +87,7 @@ class CartItem extends StatelessWidget {
                   ),
                   const Gap(14),
                   CustomText(
-                    text: '\L.E ${firebaseProduct?.price ?? item.price}',
+                    text: '$itemTotalPrice L.E',
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),

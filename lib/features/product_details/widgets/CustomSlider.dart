@@ -25,7 +25,7 @@ class _CustomSliderState extends State<CustomSlider> {
       ),
       child: Slider(
         min: 0,
-        max: 100,
+        max: 120,
         value: value,
         onChanged: (newValue) {
           setState(() {

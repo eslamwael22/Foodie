@@ -41,7 +41,6 @@ class ProductImage extends StatelessWidget {
         );
       },
 
-      // لو الصورة فشلت
       errorBuilder: (context, error, stackTrace) {
         return const SizedBox(
           height: 100,

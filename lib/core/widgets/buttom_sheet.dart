@@ -55,14 +55,6 @@ class ButtomSheet extends StatelessWidget {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: '\$',
-                      style: TextStyle(
-                        color: AppColors.primary,
-                        fontSize: fontSize ?? 20,
-                        fontWeight: fontWeight ?? FontWeight.bold,
-                      ),
-                    ),
-                    TextSpan(
                       text: price,
                       style: TextStyle(
                         color: color ?? Colors.black,
@@ -70,14 +62,21 @@ class ButtomSheet extends StatelessWidget {
                         fontWeight: fontWeight ?? FontWeight.bold,
                       ),
                     ),
+                    TextSpan(
+                      text: ' L.E',
+                      style: TextStyle(
+                        color: AppColors.primary,
+                        fontSize: fontSize ?? 20,
+                        fontWeight: fontWeight ?? FontWeight.bold,
+                      ),
+                    ),
                   ],
                 ),
               ),
+              const SizedBox(height: 5),
             ],
           ),
-
           const Spacer(),
-
           CustomContanier(
             onTap: onTap,
             text: text,

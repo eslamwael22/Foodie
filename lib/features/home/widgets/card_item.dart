@@ -91,7 +91,7 @@ class _CarditemState extends State<Carditem> {
             Row(
               children: [
                 CustomText(
-                  text: '\EGP${widget.product.price.toStringAsFixed(1)}',
+                  text: '${widget.product.price.toStringAsFixed(1)} L.E',
                   fontSize: 15,
                   fontWeight: FontWeight.bold,
                   color: AppColors.primary,
