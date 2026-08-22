@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:foodie/core/constants/app_colors.dart';
-import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 class AnimatedCheckoutButton extends StatefulWidget {
@@ -18,11 +17,10 @@ class _AnimatedCheckoutButtonState extends State<AnimatedCheckoutButton>
   late Animation<double> _iconPosition;
   late Animation<double> _textOpacity;
 
-  static const double _buttonWidth = 170;
-  static const double _iconSize = 23;
-  static const double _iconStartLeft = 20; // مكان الأيقونة الأول (جنب النص)
-  static const double _iconEndLeft =
-      _buttonWidth - _iconSize - 20; // أقصى اليمين
+  static const double _buttonWidth = 270;
+  static const double _iconSize = 30;
+  static const double _iconStartLeft = 30;
+  static const double _iconEndLeft = _buttonWidth - _iconSize - 30;
 
   @override
   void initState() {
@@ -84,14 +82,17 @@ class _AnimatedCheckoutButtonState extends State<AnimatedCheckoutButton>
               alignment: Alignment.center,
               children: [
                 // النص بيختفي تدريجيًا
-                Opacity(
-                  opacity: _textOpacity.value,
-                  child: const Text(
-                    'Checkout',
-                    style: TextStyle(
-                      color: AppColors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                Transform.translate(
+                  offset: const Offset(15, 0), // زق الكلام 15 بكسل يمين
+                  child: Opacity(
+                    opacity: _textOpacity.value,
+                    child: const Text(
+                      'Proceed to Checkout',
+                      style: TextStyle(
+                        color: AppColors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),

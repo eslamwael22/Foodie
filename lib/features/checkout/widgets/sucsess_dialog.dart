@@ -66,7 +66,7 @@ class SuccessDialog extends StatelessWidget {
                 onPressed:
                     onPressed ??
                     () {
-                      context.go('/');
+                      context.go('/Roots');
                     },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: color,

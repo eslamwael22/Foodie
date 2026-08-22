@@ -139,7 +139,7 @@ class _ProductDetailsviewState extends State<ProductDetailsview> {
               children: [
                 const Gap(6),
                 Transform.translate(
-                  offset: const Offset(0, -20),
+                  offset: const Offset(0, -17),
                   child: SizedBox(
                     width: 180,
                     height: 180,
@@ -150,7 +150,7 @@ class _ProductDetailsviewState extends State<ProductDetailsview> {
                           )
                         : Image.network(
                             widget.product.imageUrl,
-                            fit: BoxFit.fill,
+                            fit: BoxFit.contain,
                             loadingBuilder: (context, child, progress) {
                               if (progress == null) return child;
 

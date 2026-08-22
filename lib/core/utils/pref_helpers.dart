@@ -1,13 +1,16 @@
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:foodie/features/orderHistory/data/order_model.dart';
 
 class PrefHelpers {
   static const String _tokenKey = 'auth_token';
   static const String _userNameKey = 'user_name';
   static const String _userEmailKey = 'user_email';
   static const String _profileImagePathKey = 'profile_image_path';
+  static const String _ordersKey = 'paid_orders';
 
   static final ValueNotifier<String?> profileImagePath = ValueNotifier(null);
 
@@ -79,5 +82,39 @@ class PrefHelpers {
     await prefs.remove(_profileImagePathKey);
 
     profileImagePath.value = null;
+  }
+
+  static Future<void> savePaidOrder(OrderModel order) async {
+    final prefs = await SharedPreferences.getInstance();
+    final orders = await getPaidOrders();
+    orders.insert(0, order);
+    await prefs.setString(
+      _ordersKey,
+      jsonEncode(orders.map((item) => item.toJson()).toList()),
+    );
+  }
+
+  static Future<List<OrderModel>> getPaidOrders() async {
+    final prefs = await SharedPreferences.getInstance();
+    final ordersJson = prefs.getString(_ordersKey);
+    if (ordersJson == null || ordersJson.isEmpty) return [];
+
+    final decoded = jsonDecode(ordersJson);
+    if (decoded is! List) return [];
+
+    return decoded
+        .whereType<Map<String, dynamic>>()
+        .map(OrderModel.fromJson)
+        .toList();
+  }
+
+  static Future<void> deletePaidOrder(String orderId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final orders = await getPaidOrders();
+    orders.removeWhere((order) => order.id == orderId);
+    await prefs.setString(
+      _ordersKey,
+      jsonEncode(orders.map((item) => item.toJson()).toList()),
+    );
   }
 }

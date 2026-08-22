@@ -1,12 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodie/core/constants/app_colors.dart';
+import 'package:foodie/core/utils/pref_helpers.dart';
 import 'package:foodie/core/widgets/buttom_sheet.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
 import 'package:foodie/core/widgets/payment_methods.dart';
 import 'package:foodie/features/checkout/widgets/checkout_section_title.dart';
 import 'package:foodie/features/checkout/widgets/order_summary_card.dart';
 import 'package:foodie/features/checkout/widgets/sucsess_dialog.dart';
+import 'package:foodie/features/cart/data/cart_repository.dart';
+import 'package:foodie/core/network/api_service.dart';
+import 'package:foodie/features/orderHistory/data/order_model.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
@@ -22,8 +26,37 @@ class CheckoutView extends StatefulWidget {
 class _CheckoutViewState extends State<CheckoutView> {
   static const double taxes = 0.50;
   static const double deliveryFees = 5.00;
+  final CartRepository _cartRepository = CartRepository(ApiService());
   bool isChecked = false;
   String selectedPayment = "Cash on Delivery";
+
+  Future<void> _completePayment() async {
+    final total = widget.cartTotal + taxes + deliveryFees;
+    final order = OrderModel(
+      id: 'ORD-${DateTime.now().millisecondsSinceEpoch}',
+      total: total,
+      paymentMethod: selectedPayment,
+      createdAt: DateTime.now(),
+    );
+    await PrefHelpers.savePaidOrder(order);
+    await _cartRepository.clearCart();
+
+    if (!mounted) return;
+    showDialog(
+      barrierDismissible: true,
+      barrierColor: Colors.grey.shade400,
+      context: context,
+      builder: (_) => SuccessDialog(
+        title: "Payment Successful",
+        message:
+            "Your order has been placed successfully and will be delivered soon",
+        buttonText: "Done",
+        onPressed: () => context.go('/Roots'),
+        color: AppColors.primary,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,9 +65,9 @@ class _CheckoutViewState extends State<CheckoutView> {
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 140),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Gap(70),
 
+          children: [
+            Gap(60),
             const CheckoutSectionTitle(
               title: 'Order Summary',
               icon: CupertinoIcons.doc_text,
@@ -141,23 +174,7 @@ class _CheckoutViewState extends State<CheckoutView> {
         child: SafeArea(
           top: false,
           child: ButtomSheet(
-            onTap: () {
-              showDialog(
-                barrierDismissible: true,
-                barrierColor: Colors.grey.shade400,
-                context: context,
-                builder: (_) => SuccessDialog(
-                  title: "Payment Successful",
-                  message:
-                      "Your order has been placed successfully and will be delivered soon",
-                  buttonText: "Done",
-                  onPressed: () {
-                    context.go('/Roots');
-                  },
-                  color: AppColors.primary,
-                ),
-              );
-            },
+            onTap: _completePayment,
             price: (widget.cartTotal + taxes + deliveryFees).toStringAsFixed(2),
             pricetext: 'Total Price',
             text: 'Pay Now',

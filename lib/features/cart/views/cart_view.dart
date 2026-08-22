@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:foodie/core/constants/app_colors.dart';
 import 'package:foodie/core/network/api_errors.dart';
@@ -6,8 +7,9 @@ import 'package:foodie/core/widgets/custom_snak_bar.dart';
 import 'package:foodie/core/widgets/custom_text.dart';
 import 'package:foodie/features/cart/data/cart_model.dart';
 import 'package:foodie/features/cart/data/cart_repository.dart';
+import 'package:foodie/features/cart/widgets/cart_buttom_bar.dart';
 import 'package:foodie/features/cart/widgets/cart_item.dart';
-import 'package:foodie/features/cart/widgets/checkout_ani.dart';
+import 'package:foodie/features/cart/widgets/refresh_indicator.dart';
 import 'package:foodie/features/home/data/models/product_model.dart';
 import 'package:foodie/features/home/data/services/product_service.dart';
 import 'package:gap/gap.dart';
@@ -15,7 +17,6 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class CartView extends StatefulWidget {
   final Map<String, double> priceOverrides;
-
   const CartView({super.key, this.priceOverrides = const {}});
 
   @override
@@ -163,16 +164,32 @@ class _CartViewState extends State<CartView> {
         centerTitle: false,
         title: const Padding(
           padding: EdgeInsets.only(top: 10),
-          child: CustomText(
-            text: 'Cart',
-            fontSize: 22,
-            fontWeight: FontWeight.w600,
-            color: AppColors.black,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomText(
+                text: 'Cart',
+                fontSize: 22,
+                fontWeight: FontWeight.w600,
+                color: AppColors.black,
+              ),
+
+              CustomText(
+                text: 'Review your Items and Proceed to Checkout',
+                fontSize: 13,
+                fontWeight: FontWeight.w400,
+                color: AppColors.textGrey,
+              ),
+            ],
           ),
         ),
       ),
       body: _buildBody(products),
-      bottomNavigationBar: products.isEmpty ? null : _buildBottomBar(),
+      bottomNavigationBar: products.isEmpty
+          ? null
+          : CartButtomBar(
+              totalPrice: _displayTotal(_cart?.products ?? []).toDouble(),
+            ),
     );
   }
 
@@ -215,17 +232,27 @@ class _CartViewState extends State<CartView> {
 
     if (products.isEmpty) {
       return const Center(
-        child: CustomText(
-          text: 'Your cart is empty..',
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
-          color: AppColors.primary,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.remove_shopping_cart,
+              size: 80,
+              color: AppColors.primary,
+            ),
+            Gap(10),
+            CustomText(
+              text: 'Your cart is empty..',
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              color: AppColors.primary,
+            ),
+          ],
         ),
       );
     }
 
-    return RefreshIndicator(
-      color: AppColors.primary,
+    return CartRefreshIndicator(
       onRefresh: _loadCart,
       child: ListView.builder(
         padding: const EdgeInsets.fromLTRB(14, 14, 14, 120),
@@ -246,43 +273,6 @@ class _CartViewState extends State<CartView> {
             ),
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildBottomBar() {
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-        child: Container(
-          height: 90,
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Row(
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const CustomText(text: 'Total', fontSize: 20),
-                  const Gap(5),
-                  CustomText(
-                    text: '${_displayTotal(_cart?.products ?? [])} L.E',
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ],
-              ),
-              const Spacer(),
-              AnimatedCheckoutButton(
-                totalPrice: _displayTotal(_cart?.products ?? []).toDouble(),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

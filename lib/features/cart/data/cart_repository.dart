@@ -24,4 +24,8 @@ class CartRepository {
     final response = await _apiService.delete('cart/$productId');
     return CartModel.fromJson(response);
   }
+
+  Future<void> clearCart() async {
+    await _apiService.delete('cart');
+  }
 }
