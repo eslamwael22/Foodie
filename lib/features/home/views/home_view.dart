@@ -22,7 +22,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   String userName = '';
   String userEmail = '';
-  List<String> categories = ['All', 'compos', 'sliders', 'classic', 'pizzas'];
+  List<String> categories = ['All', 'Burgers', 'Sandwiches', 'Pizzas'];
   int currentIndex = 0;
   String searchQuery = '';
   final ProductService _productService = ProductService();
@@ -58,6 +58,27 @@ class _HomeViewState extends State<HomeView> {
       userName = name ?? '';
       userEmail = email ?? '';
     });
+  }
+
+  bool _matchesCategory(ProductModel product) {
+    if (currentIndex == 0) return true;
+
+    final category = product.category;
+    final searchableText = '${product.name} ${product.subtitle} $category'
+        .toLowerCase();
+
+    switch (categories[currentIndex]) {
+      case 'Burgers':
+        return searchableText.contains('burger') || category.contains('slider');
+      case 'Sandwiches':
+        return searchableText.contains('sandwich') ||
+            searchableText.contains('sandwitch') ||
+            category.contains('sand');
+      case 'Pizzas':
+        return searchableText.contains('pizza') || category.contains('pizz');
+      default:
+        return true;
+    }
   }
 
   @override
@@ -213,8 +234,11 @@ class _HomeViewState extends State<HomeView> {
                         final name = product.name.toLowerCase();
                         final subtitle = product.subtitle.toLowerCase();
 
-                        return name.contains(searchQuery) ||
+                        final matchesSearch =
+                            name.contains(searchQuery) ||
                             subtitle.contains(searchQuery);
+
+                        return matchesSearch && _matchesCategory(product);
                       }).toList();
 
                       if (filteredProducts.isEmpty) {

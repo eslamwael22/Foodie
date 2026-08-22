@@ -7,6 +7,7 @@ class ProductModel {
   final double price;
   final double rating;
   final String subtitle;
+  final String category;
 
   ProductModel({
     required this.id,
@@ -15,6 +16,7 @@ class ProductModel {
     required this.price,
     required this.rating,
     required this.subtitle,
+    this.category = '',
   });
 
   factory ProductModel.fromFirestore(
@@ -29,6 +31,7 @@ class ProductModel {
       price: (data['price'] ?? 0).toDouble(),
       rating: (data['rating'] ?? 0).toDouble(),
       subtitle: data['subtitle'] ?? '',
+      category: _readCategory(data),
     );
   }
 
@@ -44,6 +47,11 @@ class ProductModel {
     }
 
     return '';
+  }
+
+  static String _readCategory(Map<String, dynamic> data) {
+    final category = data['category'] ?? data['type'] ?? data['categoryName'];
+    return category is String ? category.trim().toLowerCase() : '';
   }
 
   static String _cleanImageUrl(String value) {
